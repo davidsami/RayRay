@@ -1,7 +1,8 @@
 #include <iostream>
 #include "RayRay.h"
+#include "Vector.h"
 
 int main(int argc, char* argv[]){
-    RayRay ray;
     return 0;
-}
+} 
+
