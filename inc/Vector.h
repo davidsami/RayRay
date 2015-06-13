@@ -8,11 +8,10 @@
 
 class Vector {
 public:
+    double x, y, z;
+
     Vector() { x=0; y=0; z=0; }
     Vector(double aX, double aY, double aZ) { x=aX; y=aY; z=aZ; }
-    Vector(const Vector& aVector) { x=aVector.x; y=aVector.y; z=aVector.z; }
-
-    Vector& operator=(const Vector& aVector) { x=aVector.x; y=aVector.y; z=aVector.z; return *this; }
 
     Vector operator-() { return Vector(-x, -y, -z); }
 
@@ -48,8 +47,11 @@ public:
                       a.z*b.x - a.x*b.z,
                       a.x*b.y - a.y*b.x);
     }
+};
 
-    double x, y, z;
+class Point: public Vector{
+public:
+    Point(double aX, double aY, double aZ):Vector(aX,aY,aZ){}
 };
 
 #endif

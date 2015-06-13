@@ -9,14 +9,17 @@
 class Transform{
 public:
     Transform(Matrix4& aMat);
-    Transform() = delete;
+    Transform()=default;
 
-    static Transform TranslationTransform(Vector &d);
-    static Transform ScaleTransform(Vector &d);
-    static Transform RotateXTransform(float theta);
-    static Transform RotateYTransform(float theta);
-    static Transform RotateZTransform(float theta);
-    static Transform RotateTransform(Vector &axis, float theta);
+    Point operator()(const Point &aP);
+    Vector operator()(const Vector &aV);
+
+    static Transform TranslationTransform(const Vector &d);
+    static Transform ScaleTransform(const Vector &d);
+    static Transform RotateXTransform(const double theta);
+    static Transform RotateYTransform(const double theta);
+    static Transform RotateZTransform(const double theta);
+    static Transform RotateTransform(const Vector &axis, const double theta);
 
 protected:
     Matrix4 mat;

@@ -9,7 +9,24 @@ Transform::Transform(Matrix4& aMatrix){
     inverse = mat.Inverse();
 }
 
-Transform Transform :: TranslationTransform(Vector &d){
+Point Transform::operator()(const Point &aP){
+    double x = mat.m[0][0]*aP.x + mat.m[0][1]*aP.y + mat.m[0][2]*aP.z + mat.m[0][3];
+    double y = mat.m[1][0]*aP.x + mat.m[1][1]*aP.y + mat.m[1][2]*aP.z + mat.m[1][3];
+    double z = mat.m[2][0]*aP.x + mat.m[2][1]*aP.y + mat.m[2][2]*aP.z + mat.m[2][3];
+    double w = mat.m[3][0]*aP.x + mat.m[3][1]*aP.y + mat.m[3][2]*aP.z + mat.m[3][3];
+
+    return Point(x/w, y/w, z/w);
+}
+
+Vector Transform::operator()(const Vector &aV){
+    double x = mat.m[0][0]*aV.x + mat.m[0][1]*aV.y + mat.m[0][2]*aV.z;
+    double y = mat.m[1][0]*aV.x + mat.m[1][1]*aV.y + mat.m[1][2]*aV.z;
+    double z = mat.m[2][0]*aV.x + mat.m[2][1]*aV.y + mat.m[2][2]*aV.z;
+
+    return Vector(x, y, z);
+}
+
+Transform Transform :: TranslationTransform(const Vector &d){
     Matrix4 matrix;
     matrix.m[0][0] = d.x;
     matrix.m[1][1] = d.y;
@@ -17,7 +34,7 @@ Transform Transform :: TranslationTransform(Vector &d){
     return Transform(matrix);
 }
 
-Transform Transform :: ScaleTransform(Vector &d){
+Transform Transform :: ScaleTransform(const Vector &d){
     Matrix4 matrix;
     matrix.m[0][3] = d.x;
     matrix.m[1][3] = d.y;
@@ -26,7 +43,7 @@ Transform Transform :: ScaleTransform(Vector &d){
 }
 
 
-Transform Transform :: RotateXTransform(float theta){
+Transform Transform :: RotateXTransform(const double theta){
     double c = cos(theta);
     double s = sin(theta);
     Matrix4 matrix;
@@ -37,7 +54,7 @@ Transform Transform :: RotateXTransform(float theta){
     return Transform(matrix);
 }
 
-Transform Transform :: RotateYTransform(float theta){
+Transform Transform :: RotateYTransform(const double theta){
     double c = cos(theta);
     double s = sin(theta);
     Matrix4 matrix;
@@ -48,7 +65,7 @@ Transform Transform :: RotateYTransform(float theta){
     return Transform(matrix);
 }
 
-Transform Transform :: RotateZTransform(float theta){
+Transform Transform :: RotateZTransform(const double theta){
     double c = cos(theta);
     double s = sin(theta);
     Matrix4 matrix;
@@ -59,7 +76,7 @@ Transform Transform :: RotateZTransform(float theta){
     return Transform(matrix);
 }
 
-Transform Transform :: RotateTransform(Vector &axis, float theta){
+Transform Transform :: RotateTransform(const Vector &axis, const double theta){
     Matrix4 matrix;
     return Transform(matrix);
 }
