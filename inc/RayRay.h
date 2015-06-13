@@ -1,6 +1,7 @@
-// David Sami 2014
+// David Sami 2015
 
 class RayRay {
 public:
+    RayRay();
 private:
 };

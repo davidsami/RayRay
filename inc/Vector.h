@@ -52,9 +52,4 @@ public:
     double x, y, z;
 };
 
-class Ray{
-public:
-    Vector o, d;
-};
-
 #endif
