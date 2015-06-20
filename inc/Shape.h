@@ -3,15 +3,14 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
-#include "Ray.h"
-#include "Transform.h"
+#include "Math.h"
 
 class Shape {
 public:
-    Shape(Transform& aTransform): mTransform(aTransform) {}
-    virtual double Intersect(Ray& ray)=0;
+    Shape(Math::Transform& aTransform): mTransform(aTransform) {}
+    virtual bool Intersect(Math::Ray& aRay, double* aIntersection) = 0;
 protected:
-    Transform mTransform;
+    Math::Transform mTransform;
 };
 
 #endif

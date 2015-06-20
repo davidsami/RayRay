@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include "RayRay.h"
-#include "Eigen/Dense"
+#include "Math.h"
+#include "Sphere.h"
 
-using namespace Eigen;
 int main(int argc, char* argv[]){
     return 0;
 } 
