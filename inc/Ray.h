@@ -3,11 +3,11 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "Vector.h"
+#include "Eigen/Dense"
 
 class Ray{
 public:
-    Vector o, d;
+    Vector3d o, d;
 };
 
 #endif

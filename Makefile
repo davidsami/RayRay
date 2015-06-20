@@ -6,7 +6,8 @@ BIN_DIR=obj
 LIB_DIR=lib
 
 SOURCES=$(wildcard $(SOURCE_DIR)/*.cpp)
-INCLUDES = $(addprefix -I,$(INC_DIRS))
+INCLUDES = $(addprefix -I,$(INC_DIRS)) \
+		   -I$(LIB_DIR)
 OBJECTS=$(SOURCES:%.cpp=$(BIN_DIR)/%.o)
 EXECUTABLE=RayRay
 
