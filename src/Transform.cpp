@@ -9,6 +9,11 @@ Transform::Transform(Matrix4& aMatrix){
     inverse = mat.Inverse();
 }
 
+Transform::Transform(){
+    mat = Matrix4::Identity;
+    inverse = Matrix4::Identity;
+}
+
 Point Transform::operator()(const Point &aP){
     double x = mat.m[0][0]*aP.x + mat.m[0][1]*aP.y + mat.m[0][2]*aP.z + mat.m[0][3];
     double y = mat.m[1][0]*aP.x + mat.m[1][1]*aP.y + mat.m[1][2]*aP.z + mat.m[1][3];
@@ -27,18 +32,18 @@ Vector Transform::operator()(const Vector &aV){
 }
 
 Transform Transform :: TranslationTransform(const Vector &d){
-    Matrix4 matrix;
-    matrix.m[0][0] = d.x;
-    matrix.m[1][1] = d.y;
-    matrix.m[2][2] = d.z;
+    Matrix4 matrix = Matrix4::Identity;
+    matrix.m[0][3] = d.x;
+    matrix.m[1][3] = d.y;
+    matrix.m[2][3] = d.z;
     return Transform(matrix);
 }
 
 Transform Transform :: ScaleTransform(const Vector &d){
-    Matrix4 matrix;
-    matrix.m[0][3] = d.x;
-    matrix.m[1][3] = d.y;
-    matrix.m[2][3] = d.z;
+    Matrix4 matrix = Matrix4::Identity;
+    matrix.m[0][0] = d.x;
+    matrix.m[1][1] = d.y;
+    matrix.m[2][2] = d.z;
     return Transform(matrix);
 }
 

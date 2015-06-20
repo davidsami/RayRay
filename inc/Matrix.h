@@ -12,6 +12,13 @@ public:
     Matrix4 operator*(const Matrix4 &aM) const;
     Matrix4 Transpose();
     Matrix4 Inverse();
+    double Determinant();
+
+    void Debug();
+
+    static inline bool equalsZero(double num, double tol);
+
+    static const Matrix4 Identity;
 
     double m[4][4];
 };

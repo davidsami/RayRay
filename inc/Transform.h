@@ -9,7 +9,7 @@
 class Transform{
 public:
     Transform(Matrix4& aMat);
-    Transform()=default;
+    Transform();
 
     Point operator()(const Point &aP);
     Vector operator()(const Vector &aV);
