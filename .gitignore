@@ -32,3 +32,6 @@ RayRay
 Test
 *.swp
 ~*
+
+# Results
+*.ppm
