@@ -38,6 +38,8 @@ namespace Math {
     };
 
     struct Ray{
+        Ray(Point aO, Vector aD):o(aO), d(aD){}
+        Ray():o(Point(0,0,0)), d(Vector(0,0,0)){}
         Point o;
         Vector d;
     };
