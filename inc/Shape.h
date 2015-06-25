@@ -7,8 +7,8 @@
 
 class Shape {
 public:
-    Shape(Math::Transform& aTransform): mTransform(aTransform) {}
-    virtual bool Intersect(Math::Ray& aRay, double* aIntersection) = 0;
+    Shape(const Math::Transform& aTransform): mTransform(aTransform) {}
+    virtual bool Intersect(const Math::Ray& aRay, double* aIntersection) = 0;
 protected:
     Math::Transform mTransform;
 };

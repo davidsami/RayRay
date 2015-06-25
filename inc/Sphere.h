@@ -8,11 +8,11 @@
 
 class Sphere: Shape {
 public:
-    Sphere(Math::Transform& aTransform, double aRadius);
-    virtual bool Intersect(Math::Ray& aRay, double* aIntersection);
+    Sphere(const Math::Point& aCenter, double aRadius);
+    virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
 private:
-    Math::Point mCenter;
     double mRadius;
+    static Math::Transform TransformationFromPoint(const Math::Point& aCenter);
 };
 
 #endif
