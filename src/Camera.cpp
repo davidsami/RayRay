@@ -2,13 +2,13 @@
 
 #include "Camera.h"
 
-Camera::Camera(Math::Transform& aCameraToWorld, double aFov):
+Camera::Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim):
     mCameraToWorld(aCameraToWorld),
-    mScreenToCamera(PerspectiveTransform(aFov, 1e-2f, 1000.))
+    mScreenToCamera(PerspectiveTransform(aFov, 1e-2f, 1000., xDim, yDim))
 {
 }
 
-Camera* Camera::CreateCamera(Settings* aSettings){
+Camera* Camera::CreateCamera(Settings* aSettings, Screen* aScreen){
     Camera* out = NULL;
 
     bool fovResult;
@@ -47,23 +47,29 @@ Camera* Camera::CreateCamera(Settings* aSettings){
         Eigen::Affine3d t = cameraPosition * cameraRotation;
         Math::Transform transform(t);
 
-        out = new Camera(transform, fov);
+        uint32_t xDim = aScreen->GetX();
+        uint32_t yDim = aScreen->GetY();
+        out = new Camera(transform, fov, xDim, yDim);
     }
 
     return out;
 }
 
-Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f){
+Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, uint32_t xDim, uint32_t yDim){
+    // Normalized screen dimensions
+    Eigen::Affine3d s;
+    s = Eigen::Translation3d((double)xDim/2., (double)yDim/2., 0);
+    s *= Eigen::Scaling(2./(double)xDim, -2./(double)yDim, 1.);
+
     double m = f / (f - n);
     Eigen::Matrix4d t;
     t << 1,   0,   0,   0,
          0,   1,   0,   0,
          0,   0,   m,-n*m,
          0,   0,   1,   0;
+    s *= t;
 
     double scale = 1 / tanf(aFov/2);
-
-    Eigen::Affine3d s(t);
     s *= Eigen::Scaling(scale, scale, 1.);
 
     return Math::Transform(s);

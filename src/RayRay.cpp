@@ -29,7 +29,7 @@ void RayRay::Init(){
 
 void RayRay::InitScreen(){
     mScreen = Screen::CreateScreen(mSettings);
-    mCamera = Camera::CreateCamera(mSettings);
+    mCamera = Camera::CreateCamera(mSettings, mScreen);
 }
 
 void RayRay::Loop(){
