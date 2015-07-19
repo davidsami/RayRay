@@ -12,8 +12,8 @@ OBJECTS=$(SOURCES:%.cpp=$(BIN_DIR)/%.o)
 EXECUTABLE=RayRay
 
 IFLAGS=$(INCLUDES)
-CFLAGS=-c -Wall -Wno-deprecated -std=c++11
-LFLAGS=
+CFLAGS=-c -O3 -Wall -Wno-deprecated -std=c++11
+LFLAGS=-O3
 
 all: folder $(EXECUTABLE)
 
