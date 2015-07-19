@@ -2,6 +2,7 @@
 
 #ifndef RAYRAY_MATH_H
 #define RAYRAY_MATH_H
+#include <ostream>
 #include "Eigen/Dense"
 #include "Eigen/Geometry"
 
@@ -25,13 +26,13 @@ namespace Math {
         }
     };
 
-    struct Point : Vector {
+    struct Point : public Vector {
         Point(): Vector(){}
         Point(double x, double y, double z):Vector(x,y,z){}
         Point(Eigen::Vector3d& vin):Vector(vin){}
     };
 
-    struct Normal : Vector {
+    struct Normal : public Vector {
         Normal(): Vector(){}
         Normal(double x, double y, double z):Vector(x,y,z){}
         Normal(Eigen::Vector3d& vin):Vector(vin){}
@@ -40,16 +41,21 @@ namespace Math {
     struct Ray{
         Ray(Point aO, Vector aD):o(aO), d(aD){}
         Ray():o(Point(0,0,0)), d(Vector(0,0,0)){}
+        Point GetPoint(double t){
+            Eigen::Vector3d p = o.d + d.d*t;
+            return Point(p);
+        }
         Point o;
         Vector d;
     };
 
+
     struct Transform {
-        Eigen::Affine3d t;
-        Eigen::Affine3d tinv;
+        Eigen::Projective3d t;
+        Eigen::Projective3d tinv;
 
         Transform() = delete;
-        Transform(Eigen::Affine3d& tin){
+        Transform(Eigen::Projective3d& tin){
             t = tin;
             tinv = tin.inverse();
         }
@@ -63,7 +69,7 @@ namespace Math {
 
         Point operator()(const Point &p) const{
             Point o;
-            o.d = t * p.d;
+            o.d = (t * p.d.colwise().homogeneous()).colwise().hnormalized();
             return o;
         }
 
@@ -89,7 +95,7 @@ namespace Math {
 
         Point reverse(const Point &p) const{
             Point o;
-            o.d = tinv * p.d;
+            o.d = (tinv * p.d.colwise().homogeneous()).colwise().hnormalized();
             return o;
         }
 
@@ -107,5 +113,8 @@ namespace Math {
         }
     };
 };
+
+std::ostream &operator<<(std::ostream &os, const Math::Vector &m);
+std::ostream &operator<<(std::ostream &os, const Math::Ray &m);
 
 #endif
