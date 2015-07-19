@@ -21,3 +21,7 @@ size_t PixelBuffer::GetWidth() const{
 Colour PixelBuffer::GetPixel(size_t x, size_t y) const{
     return mData[x + y*mWidth];
 }
+
+Colour& PixelBuffer::Get(size_t x, size_t y){
+    return mData[x + y*mWidth];
+}

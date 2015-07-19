@@ -2,8 +2,8 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(const Math::Point& aCenter, double aRadius):
-    Shape(Sphere::TransformationFromPoint(aCenter)),
+Sphere::Sphere(const Colour& aColour, const Math::Point& aCenter, double aRadius):
+    Shape(Sphere::TransformationFromPoint(aCenter), aColour),
     mRadius(aRadius)
 {
 }
@@ -45,7 +45,7 @@ Math::Transform Sphere::TransformationFromPoint(const Math::Point& aCenter){
     double x = aCenter.d[0];
     double y = aCenter.d[1];
     double z = aCenter.d[2];
-    Eigen::Affine3d t;
+    Eigen::Projective3d t;
     t = Eigen::Translation3d(x,y,z);
     return Math::Transform(t);
 }

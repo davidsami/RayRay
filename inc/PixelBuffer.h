@@ -15,6 +15,7 @@ public:
     size_t GetHeight() const;
     size_t GetWidth() const;
     Colour GetPixel(size_t x, size_t y) const;
+    Colour& Get(size_t x, size_t y);
 private:
     Colour *mData;
     const size_t mHeight, mWidth;

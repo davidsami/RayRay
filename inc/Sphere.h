@@ -6,9 +6,9 @@
 #include "Math.h"
 #include "Shape.h"
 
-class Sphere: Shape {
+class Sphere: public Shape {
 public:
-    Sphere(const Math::Point& aCenter, double aRadius);
+    Sphere(const Colour& aColour, const Math::Point& aCenter, double aRadius);
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
 private:
     double mRadius;

@@ -20,6 +20,9 @@ public:
     static const std::string kYawCamera;
     static const std::string kPitchCamera;
     static const std::string kRollCamera;
+    static const std::string kAmbientLight;
+    static const std::string kBackgroundColour;
+    static const std::string kOutputFile;
 
     // If setting exists, will replace
     void AddSetting(const std::string& aKey, const std::string& aValue);

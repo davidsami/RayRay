@@ -35,16 +35,16 @@ Camera* Camera::CreateCamera(Settings* aSettings, Screen* aScreen){
        pitchCamResult &&
        rollCamResult)
     {
-        Eigen::Affine3d cameraPosition;
+        Eigen::Projective3d cameraPosition;
         cameraPosition = Eigen::Translation3d(xCam, yCam, zCam);
 
-        Eigen::Affine3d cameraRotation;
+        Eigen::Projective3d cameraRotation;
         cameraRotation = 
               Eigen::AngleAxisd(yawCam, Eigen::Vector3d::UnitZ())
             * Eigen::AngleAxisd(pitchCam, Eigen::Vector3d::UnitY())
             * Eigen::AngleAxisd(rollCam, Eigen::Vector3d::UnitX());
 
-        Eigen::Affine3d t = cameraPosition * cameraRotation;
+        Eigen::Projective3d t = cameraPosition * cameraRotation;
         Math::Transform transform(t);
 
         uint32_t xDim = aScreen->GetX();
@@ -56,10 +56,19 @@ Camera* Camera::CreateCamera(Settings* aSettings, Screen* aScreen){
 }
 
 Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, uint32_t xDim, uint32_t yDim){
+    double x = xDim;
+    double y = yDim;
     // Normalized screen dimensions
-    Eigen::Affine3d s;
-    s = Eigen::Translation3d((double)xDim/2., (double)yDim/2., 0);
-    s *= Eigen::Scaling(2./(double)xDim, -2./(double)yDim, 1.);
+    double aspectRatio = x / y;
+    Eigen::Projective3d s;
+    s = Eigen::Scaling(2./x, -2./y, 1.);
+    s *= Eigen::Scaling(aspectRatio, 1., 1.);
+    s *= Eigen::Translation3d(-x/2., -y/2., 0);
+
+    // Perspective transform
+    Eigen::Projective3d pers;
+    double scale = 1. / tanh(M_PI*aFov/2./180.);
+    pers = Eigen::Scaling(scale, scale, 1.);
 
     double m = f / (f - n);
     Eigen::Matrix4d t;
@@ -67,12 +76,11 @@ Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, ui
          0,   1,   0,   0,
          0,   0,   m,-n*m,
          0,   0,   1,   0;
-    s *= t;
+    pers *= t;
 
-    double scale = 1 / tanf(aFov/2);
-    s *= Eigen::Scaling(scale, scale, 1.);
-
-    return Math::Transform(s);
+    Eigen::Projective3d transform;
+    transform = pers.inverse() * s;
+    return Math::Transform(transform);
 }
 
 Math::Ray Camera::GenerateRay(double x, double y){
