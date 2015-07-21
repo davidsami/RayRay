@@ -2,8 +2,8 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(const Colour& aColour, const Math::Point& aCenter, double aRadius):
-    Shape(Sphere::TransformationFromPoint(aCenter), aColour),
+Sphere::Sphere(const Colour& aColour, const size_t aMaterialId, const Math::Point& aCenter, double aRadius):
+    Shape(Sphere::TransformationFromPoint(aCenter), aColour, aMaterialId),
     mRadius(aRadius)
 {
 }

@@ -8,7 +8,7 @@
 
 class Shape {
 public:
-    Shape(const Math::Transform& aTransform, const Colour& aColour): mTransform(aTransform), mColour(aColour) {}
+    Shape(const Math::Transform& aTransform, const Colour& aColour, const size_t aMaterialId): mTransform(aTransform), mColour(aColour), mMaterialId(aMaterialId) {}
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection) = 0;
     virtual Math::Normal GetNormal(const Math::Point& aPoint) = 0;
     Colour GetColour(){
@@ -18,6 +18,7 @@ protected:
     Math::Transform mTransform;
     // Temporary. Single colour shapes
     Colour mColour;
+    size_t mMaterialId;
 };
 
 #endif

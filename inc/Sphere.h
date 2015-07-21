@@ -8,7 +8,7 @@
 
 class Sphere: public Shape {
 public:
-    Sphere(const Colour& aColour, const Math::Point& aCenter, double aRadius);
+    Sphere(const Colour& aColour, const size_t aMaterialId, const Math::Point& aCenter, double aRadius);
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
     virtual Math::Normal GetNormal(const Math::Point& aPoint);
 private:

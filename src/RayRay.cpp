@@ -24,22 +24,25 @@ void RayRay::Init(){
     InitSampler();
 
     //XXX: Test
+    std::unique_ptr<Material> mat(new Material(0, 1, 0));
+    mMaterials.push_back(std::move(mat));
+
     Colour c(255,0,0);
     Math::Point p(0,0,5);
-    std::unique_ptr<Sphere> test(new Sphere(c, p, 1));
+    std::unique_ptr<Sphere> test(new Sphere(c, 0, p, 1));
     mObjects.push_back(std::move(test));
 
     Colour c2(0,255,0);
     Math::Point p2(1,1,3);
-    std::unique_ptr<Sphere> test2(new Sphere(c2, p2, 1));
+    std::unique_ptr<Sphere> test2(new Sphere(c2, 0, p2, 1));
     mObjects.push_back(std::move(test2));
 
     Math::Point p3(1,0,0);
-    std::unique_ptr<Light> light(new Light(7, p3));
+    std::unique_ptr<Light> light(new Light(5, p3));
     mLights.push_back(std::move(light));
 
-    Math::Point p4(-1,0,0);
-    std::unique_ptr<Light> light2(new Light(2.5, p4));
+    Math::Point p4(-1,0,4);
+    std::unique_ptr<Light> light2(new Light(1.5, p4));
     mLights.push_back(std::move(light2));
 }
 
@@ -68,6 +71,7 @@ Colour RayRay::CastRay(Math::Ray aRay){
     Colour ret = Colour(0,0,0);
 
     if(objectIntersect.mIntersects){
+        size_t materialId = objectIntersect.mMaterialId;
         ret = objectIntersect.mColour;
 
         double intensity = 0;
@@ -79,7 +83,10 @@ Colour RayRay::CastRay(Math::Ray aRay){
 
             double lightIntensity = (*it).mIntensity;
             double attenuation = (*it).mAttenuation;
-            double diffuse = 1 * l.Dot(n);
+
+            double diffuseConstant = mMaterials[materialId]->mDiffuse;
+            double dotProduct = l.Dot(n);
+            double diffuse = diffuseConstant * (dotProduct > 0)?dotProduct:0;
             intensity += lightIntensity / attenuation * (diffuse);
         }
 
@@ -99,7 +106,7 @@ ObjectIntersection RayRay::IntersectObjects(Math::Ray aRay){
 
         if(doesIntersect &&
                intersection < minIntersection &&
-               intersection > 0.1)
+               intersection > 0.0001)
         {
             minIntersection = intersection;
             intersectionShape = it;
