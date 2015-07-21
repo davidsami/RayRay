@@ -2,16 +2,16 @@
 
 #include "Screen.h"
 
-Screen* Screen::CreateScreen(Settings* aSettings){
-    Screen* out = NULL;
+std::unique_ptr<Screen> Screen::CreateScreen(const Settings& aSettings){
+    std::unique_ptr<Screen> out;
     bool xResult, yResult;
     uint32_t xPixels, yPixels;
 
-    xResult = aSettings->GetUnsigned(Settings::kXPixels, &xPixels);
-    yResult = aSettings->GetUnsigned(Settings::kYPixels, &yPixels);
+    xResult = aSettings.GetUnsigned(Settings::kXPixels, &xPixels);
+    yResult = aSettings.GetUnsigned(Settings::kYPixels, &yPixels);
 
     if(xResult && yResult){
-        out = new Screen(xPixels,yPixels);
+        out = std::make_unique<Screen>(xPixels,yPixels);
     }
 
     return out;

@@ -6,16 +6,9 @@
 #include "RayRay.h"
 #include "Sphere.h"
 
-RayRay::RayRay(Settings* aSettings): 
-    mSettings(aSettings),
-    mScreen(NULL),
-    mCamera(NULL)
+RayRay::RayRay(std::unique_ptr<Settings> aSettings):
+    mSettings(std::move(aSettings))
 {
-}
-
-RayRay::~RayRay(){
-    delete mScreen;
-    delete mCamera;
 }
 
 void RayRay::Run(){
@@ -54,8 +47,8 @@ void RayRay::InitScene(){
 }
 
 void RayRay::InitSampler(){
-    mScreen = Screen::CreateScreen(mSettings);
-    mCamera = Camera::CreateCamera(mSettings, mScreen);
+    mScreen = Screen::CreateScreen(*mSettings);
+    mCamera = Camera::CreateCamera(*mSettings, *mScreen);
     std::unique_ptr<PixelBuffer> pixels(new PixelBuffer(mScreen->GetY(), mScreen->GetX()));
     mPixels = std::move(pixels);
 }
@@ -135,7 +128,6 @@ std::vector<LightIntersection> RayRay::IntersectLights(Math::Point aOrigin, Math
             LightIntersection intersect;
             intersect.mLightRay = rayToLight;
             intersect.mIntensity = (*it)->GetIntensity();
-            //intersect.mLightColour = (*it)->GetColour();
             intersect.mAttenuation = (*it)->GetAttenuation(aOrigin);
 
             intersections.push_back(intersect);

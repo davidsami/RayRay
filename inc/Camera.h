@@ -10,8 +10,8 @@
 class Camera {
 public:
     Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim);
-    Math::Ray GenerateRay(double x, double y);
-    static Camera* CreateCamera(Settings* aSettings, Screen* aScreen);
+    Math::Ray GenerateRay(double x, double y) const;
+    static std::unique_ptr<Camera> CreateCamera(const Settings& aSettings, const Screen& aScreen);
 protected:
     static Math::Transform PerspectiveTransform(double aFov, double n, double f, uint32_t xDim, uint32_t yDim);
     Math::Transform mCameraToWorld;

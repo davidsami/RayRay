@@ -2,6 +2,8 @@
 
 #ifndef RAYRAY_MATH_H
 #define RAYRAY_MATH_H
+
+#include <memory>
 #include <ostream>
 #include "Eigen/Dense"
 #include "Eigen/Geometry"

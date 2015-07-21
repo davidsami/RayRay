@@ -37,7 +37,7 @@ void Settings::AddSetting(const std::string& aKey, const std::string& aValue){
     mSettings[aKey] = aValue;
 }
 
-bool Settings::GetString(const std::string& aKey, std::string* aOut){
+bool Settings::GetString(const std::string& aKey, std::string* aOut) const{
     bool result = true;
     std::string out;
 
@@ -65,7 +65,7 @@ bool Settings::GetString(const std::string& aKey, std::string* aOut){
     return result;
 }
 
-bool Settings::GetInt(const std::string& aKey, int* aOut){
+bool Settings::GetInt(const std::string& aKey, int* aOut) const{
     bool result = true;
     int out;
     std::string val;
@@ -86,7 +86,7 @@ bool Settings::GetInt(const std::string& aKey, int* aOut){
     return result;
 }
 
-bool Settings::GetUnsigned(const std::string& aKey, uint32_t* aOut){
+bool Settings::GetUnsigned(const std::string& aKey, uint32_t* aOut) const{
     bool result = true;
     uint32_t out;
     std::string val;
@@ -107,7 +107,7 @@ bool Settings::GetUnsigned(const std::string& aKey, uint32_t* aOut){
     return result;
 }
 
-bool Settings::GetDouble(const std::string& aKey, double* aOut){
+bool Settings::GetDouble(const std::string& aKey, double* aOut) const{
     bool result = true;
     double out;
     std::string val;

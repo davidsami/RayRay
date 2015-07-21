@@ -34,8 +34,7 @@ struct LightIntersection : public Intersection {
 
 class RayRay {
 public:
-    RayRay(Settings* aSettings);
-    ~RayRay();
+    RayRay(std::unique_ptr<Settings> aSettings);
     void Run();
 private:
     void Init();
@@ -49,9 +48,9 @@ private:
 
     void Output();
 
-    Settings* mSettings;
-    Screen* mScreen;
-    Camera* mCamera;
+    std::unique_ptr<Settings> mSettings;
+    std::unique_ptr<Screen> mScreen;
+    std::unique_ptr<Camera> mCamera;
     std::unique_ptr<PixelBuffer> mPixels;
 
     Colour mAmbient;

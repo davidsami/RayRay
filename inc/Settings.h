@@ -30,10 +30,10 @@ public:
 
     // Parse setting for type
     // Returns true for success, false for failure
-    bool GetString(const std::string& aKey, std::string* aOut);
-    bool GetInt(const std::string& aKey, int* aOut);
-    bool GetUnsigned(const std::string& aKey, uint32_t* aOut);
-    bool GetDouble(const std::string& aKey, double* aOut);
+    bool GetString(const std::string& aKey, std::string* aOut) const;
+    bool GetInt(const std::string& aKey, int* aOut) const;
+    bool GetUnsigned(const std::string& aKey, uint32_t* aOut) const;
+    bool GetDouble(const std::string& aKey, double* aOut) const;
 
 private:
     std::map<std::string, std::string> mSettings;

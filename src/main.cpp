@@ -6,12 +6,12 @@
 #include "Screen.h"
 
 int main(int argc, char* argv[]){
-    Settings s;
-    s.AddSetting(Settings::kFOV, "90");
-    s.AddSetting(Settings::kXPixels, "1920");
-    s.AddSetting(Settings::kYPixels, "1080");
+    std::unique_ptr<Settings> s(new Settings);
+    s->AddSetting(Settings::kFOV, "90");
+    s->AddSetting(Settings::kXPixels, "1920");
+    s->AddSetting(Settings::kYPixels, "1080");
 
-    RayRay r(&s);
+    RayRay r(std::move(s));
     r.Run();
     return 0;
 } 

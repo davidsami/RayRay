@@ -8,24 +8,24 @@ Camera::Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint
 {
 }
 
-Camera* Camera::CreateCamera(Settings* aSettings, Screen* aScreen){
-    Camera* out = NULL;
+std::unique_ptr<Camera> Camera::CreateCamera(const Settings& aSettings, const Screen& aScreen){
+    std::unique_ptr<Camera> out;
 
     bool fovResult;
     double fov;
-    fovResult = aSettings->GetDouble(Settings::kFOV, &fov);
+    fovResult = aSettings.GetDouble(Settings::kFOV, &fov);
 
     bool xCamResult, yCamResult, zCamResult;
     double xCam, yCam, zCam;
-    xCamResult = aSettings->GetDouble(Settings::kXCamera, &xCam);
-    yCamResult = aSettings->GetDouble(Settings::kYCamera, &yCam);
-    zCamResult = aSettings->GetDouble(Settings::kZCamera, &zCam);
+    xCamResult = aSettings.GetDouble(Settings::kXCamera, &xCam);
+    yCamResult = aSettings.GetDouble(Settings::kYCamera, &yCam);
+    zCamResult = aSettings.GetDouble(Settings::kZCamera, &zCam);
 
     bool yawCamResult, pitchCamResult, rollCamResult;
     double yawCam, pitchCam, rollCam;
-    yawCamResult = aSettings->GetDouble(Settings::kYawCamera, &yawCam);
-    pitchCamResult = aSettings->GetDouble(Settings::kPitchCamera, &pitchCam);
-    rollCamResult = aSettings->GetDouble(Settings::kRollCamera, &rollCam);
+    yawCamResult = aSettings.GetDouble(Settings::kYawCamera, &yawCam);
+    pitchCamResult = aSettings.GetDouble(Settings::kPitchCamera, &pitchCam);
+    rollCamResult = aSettings.GetDouble(Settings::kRollCamera, &rollCam);
 
     if(fovResult &&
        xCamResult &&
@@ -47,9 +47,9 @@ Camera* Camera::CreateCamera(Settings* aSettings, Screen* aScreen){
         Eigen::Projective3d t = cameraPosition * cameraRotation;
         Math::Transform transform(t);
 
-        uint32_t xDim = aScreen->GetX();
-        uint32_t yDim = aScreen->GetY();
-        out = new Camera(transform, fov, xDim, yDim);
+        uint32_t xDim = aScreen.GetX();
+        uint32_t yDim = aScreen.GetY();
+        out = std::make_unique<Camera>(transform, fov, xDim, yDim);
     }
 
     return out;
@@ -83,7 +83,7 @@ Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, ui
     return Math::Transform(transform);
 }
 
-Math::Ray Camera::GenerateRay(double x, double y){
+Math::Ray Camera::GenerateRay(double x, double y) const{
     Math::Point screenPoint(x,y,0);
     Math::Point cameraPoint = mScreenToCamera(screenPoint);
 
