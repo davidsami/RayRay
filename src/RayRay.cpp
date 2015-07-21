@@ -26,21 +26,21 @@ void RayRay::Init(){
     //XXX: Test
     Colour c(255,0,0);
     Math::Point p(0,0,5);
-    Sphere* test = new Sphere(c, p, 1);
-    mObjects.push_back(test);
+    std::unique_ptr<Sphere> test(new Sphere(c, p, 1));
+    mObjects.push_back(std::move(test));
 
     Colour c2(0,255,0);
     Math::Point p2(1,1,3);
-    Sphere* test2 = new Sphere(c2, p2, 1);
-    mObjects.push_back(test2);
+    std::unique_ptr<Sphere> test2(new Sphere(c2, p2, 1));
+    mObjects.push_back(std::move(test2));
 
     Math::Point p3(1,0,0);
-    Light* light = new Light(7, p3);
-    mLights.push_back(light);
+    std::unique_ptr<Light> light(new Light(7, p3));
+    mLights.push_back(std::move(light));
 
     Math::Point p4(-1,0,0);
-    Light* light2 = new Light(2.5, p4);
-    mLights.push_back(light2);
+    std::unique_ptr<Light> light2(new Light(2.5, p4));
+    mLights.push_back(std::move(light2));
 }
 
 void RayRay::InitScene(){
@@ -91,7 +91,8 @@ Colour RayRay::CastRay(Math::Ray aRay){
 
 ObjectIntersection RayRay::IntersectObjects(Math::Ray aRay){
     double minIntersection = std::numeric_limits<double>::infinity();
-    Shape* intersectionShape = NULL;
+    std::vector<std::unique_ptr<Shape>>::iterator intersectionShape;
+
     for(auto it = mObjects.begin(); it != mObjects.end(); it++){
         double intersection;
         bool doesIntersect = (*it)->Intersect(aRay, &intersection);
@@ -101,7 +102,7 @@ ObjectIntersection RayRay::IntersectObjects(Math::Ray aRay){
                intersection > 0.1)
         {
             minIntersection = intersection;
-            intersectionShape = *it;
+            intersectionShape = it;
         }
     }
 
@@ -111,8 +112,8 @@ ObjectIntersection RayRay::IntersectObjects(Math::Ray aRay){
     if (minIntersection != std::numeric_limits<double>::infinity()){
         ret.mIntersects = true;
         ret.mPoint = aRay.GetPoint(minIntersection);
-        ret.mColour = intersectionShape->GetColour();
-        ret.mNormal = intersectionShape->GetNormal(ret.mPoint);
+        ret.mColour = (*intersectionShape)->GetColour();
+        ret.mNormal = (*intersectionShape)->GetNormal(ret.mPoint);
     }
     return ret;
 }

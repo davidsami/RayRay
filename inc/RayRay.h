@@ -53,10 +53,9 @@ private:
     std::unique_ptr<Camera> mCamera;
     std::unique_ptr<PixelBuffer> mPixels;
 
-    Colour mAmbient;
-    std::vector<Shape*> mObjects;
-    std::vector<Light*> mLights;
-    std::vector<Material*> mMaterials;
+    std::vector<std::unique_ptr<Shape>> mObjects;
+    std::vector<std::unique_ptr<Light>> mLights;
+    std::vector<std::unique_ptr<Material>> mMaterials;
 };
 
 #endif
