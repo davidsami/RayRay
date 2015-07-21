@@ -13,6 +13,7 @@ const std::string Settings::kYawCamera = "yaw_camera";
 const std::string Settings::kPitchCamera = "pitch_camera";
 const std::string Settings::kRollCamera = "roll_camera";
 const std::string Settings::kAmbientLight = "ambient_light";
+const std::string Settings::kAmbientIntensity = "ambient_intensity";
 const std::string Settings::kBackgroundColour = "background_colour";
 const std::string Settings::kOutputFile = "output_file";
 
@@ -27,6 +28,7 @@ const std::map<std::string, std::string> Settings::kDefaults = {
     {Settings::kPitchCamera, "0"},
     {Settings::kRollCamera, "0"},
     {Settings::kAmbientLight, "0,0,0"},
+    {Settings::kAmbientIntensity, "0"},
     {Settings::kBackgroundColour, "0,0,0"},
     {Settings::kOutputFile, "out.ppm"},
 };

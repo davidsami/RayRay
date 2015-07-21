@@ -10,6 +10,8 @@ namespace Math {
     // Uses quadratic formula to solve for roots. Returns true if roots available
     bool SolveQuadratic(double a, double b, double c, double* r0, double* r1);
 
+    // Wrapper classes for Vector, Point and Normal
+    // Mostly exist to correctly handle homogenous coordinates for transformation
     struct Vector {
         Eigen::Vector3d d;
         Vector (){
@@ -23,6 +25,29 @@ namespace Math {
         }
         double operator()(int i){
             return d(i);
+        }
+        Vector operator+(const Vector& rhs) const{
+            Eigen::Vector3d out;
+            out = d + rhs.d;
+            return Vector(out);
+        }
+        Vector operator-(const Vector& rhs) const{
+            Eigen::Vector3d out;
+            out = d - rhs.d;
+            return Vector(out);
+        }
+        double Dot(const Vector& rhs) const{
+            return d.dot(rhs.d);
+        }
+        Vector Cross(const Vector& rhs) const{
+            Eigen::Vector3d out;
+            out = d.cross(rhs.d);
+            return Vector(out);
+        }
+        Vector Normal(){
+            Eigen::Vector3d out;
+            out = d.normalized();
+            return Vector(out);
         }
     };
 

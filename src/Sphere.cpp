@@ -31,7 +31,7 @@ bool Sphere::Intersect(const Math::Ray& aRay, double* aIntersection){
     double t0 = 0, t1 = 0;
     Math::SolveQuadratic(a,b,c,&t0,&t1);
 
-    if (t0 > 0){
+    if (t0 > 0 && t0 < t1){
        *aIntersection = t0;
     } else if (t1 > 0){
        *aIntersection = t1;
@@ -39,6 +39,11 @@ bool Sphere::Intersect(const Math::Ray& aRay, double* aIntersection){
         return false;
     }
     return true;
+}
+
+Math::Normal Sphere::GetNormal(const Math::Point& aPoint){
+    Math::Vector point = mTransform.reverse(aPoint).Normal();
+    return Math::Normal(point.d);
 }
 
 Math::Transform Sphere::TransformationFromPoint(const Math::Point& aCenter){

@@ -21,6 +21,7 @@ public:
     static const std::string kPitchCamera;
     static const std::string kRollCamera;
     static const std::string kAmbientLight;
+    static const std::string kAmbientIntensity;
     static const std::string kBackgroundColour;
     static const std::string kOutputFile;
 

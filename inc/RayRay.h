@@ -3,19 +3,33 @@
 #ifndef RAYRAY_H
 #define RAYRAY_H
 
-#include <vector>
 #include <memory>
+#include <vector>
 #include "Camera.h"
+#include "Light.h"
+#include "Material.h"
 #include "PixelBuffer.h"
 #include "Screen.h"
 #include "Settings.h"
 #include "Shape.h"
 
 struct Intersection {
-public:
     bool mIntersects;
+};
+
+struct ObjectIntersection : public Intersection {
     Math::Point mPoint;
     Colour mColour;
+    Math::Normal mNormal;
+    Math::Ray mReflection;
+};
+
+struct LightIntersection : public Intersection {
+    Math::Ray mLightRay;
+    // Colour mLightColour;
+    // Math::Vector mHalfAngle;
+    double mAttenuation;
+    double mIntensity;
 };
 
 class RayRay {
@@ -29,7 +43,9 @@ private:
     void InitSampler();
 
     void Loop();
-    Intersection Intersect(Math::Ray aRay);
+    Colour CastRay(Math::Ray aRay);
+    ObjectIntersection IntersectObjects(Math::Ray aRay);
+    std::vector<LightIntersection> IntersectLights(Math::Point aOrigin, Math::Normal aNormal);
 
     void Output();
 
@@ -40,8 +56,8 @@ private:
 
     Colour mAmbient;
     std::vector<Shape*> mObjects;
-    //std::vector<Light*> mLights;
-    //std::vector<Material*> mMaterials;
+    std::vector<Light*> mLights;
+    std::vector<Material*> mMaterials;
 };
 
 #endif

@@ -13,5 +13,8 @@ struct Colour{
 };
 
 std::ostream &operator<<(std::ostream &os, const Colour &c);
+Colour operator*(const double lhs, const Colour &c);
+Colour operator*(const Colour &c, const double rhs);
+Colour operator+(const Colour &lhs, const Colour &rhs);
 
 #endif
