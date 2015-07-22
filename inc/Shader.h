@@ -18,15 +18,24 @@ struct Intersection {
 };
 
 struct ObjectIntersection : public Intersection {
+    // Initial Ray
+    Math::Ray mRay;
+
+    // Intersection point
     Math::Point mPoint;
+
+    // Object properties
     Colour mColour;
     Math::Normal mNormal;
-    Math::Ray mReflection;
+    // Math::Ray mReflection;
     size_t mMaterialId;
 };
 
 struct LightIntersection : public Intersection {
+    // Ray to light
     Math::Ray mLightRay;
+
+    // Light properties
     double mAttenuation;
     double mIntensity;
 };
@@ -40,7 +49,7 @@ private:
 
 protected:
     // Implementation specific
-    virtual Colour CalculateColour(ObjectIntersection aObject, LightIntersection aLight)=0;
+    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, Scene& aScene)=0;
 
     // Intersection functions
     ObjectIntersection IntersectObjects(Math::Ray aRay, Scene& aScene);

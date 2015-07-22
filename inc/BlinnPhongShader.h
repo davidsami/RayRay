@@ -7,7 +7,7 @@
 
 class BlinnPhongShader: public Shader {
 protected:
-    virtual Colour CalculateColour(ObjectIntersection aObject, LightIntersection aLight);
+    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, Scene& aScene);
 };
 
 #endif

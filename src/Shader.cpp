@@ -16,36 +16,9 @@ Colour Shader::CastRay(Math::Ray aRay, Scene& aScene){
     Colour ret = Colour(0,0,0);
 
     if(objectIntersect.mIntersects){
-        size_t materialId = objectIntersect.mMaterialId;
-
         std::vector<LightIntersection> hitLights = IntersectLights(objectIntersect.mPoint, objectIntersect.mNormal, aScene);
 
-        double diffuse = 0;
-        Math::Vector specularColour(0,0,0);
-        for(auto it = hitLights.begin(); it != hitLights.end(); it++){
-            // Values needed for next parts
-            Math::Vector l = (*it).mLightRay.d;
-            Math::Normal n = objectIntersect.mNormal;
-            Math::Vector lPlusV = l + aRay.d;
-            Math::Vector halfAngle = lPlusV.Normal();
-
-            double lightIntensity = (*it).mIntensity;
-            double attenuation = (*it).mAttenuation;
-
-            // Calculate diffuse multiplier
-            double diffuseConstant = aScene.mMaterials[materialId]->mDiffuse;
-            double diffuseDot = l.Normal().Dot(n);
-            diffuse += lightIntensity / attenuation * diffuseConstant * ((diffuseDot > 0)?diffuseDot:0);
-
-            // Calculate specular component
-            double shininess = aScene.mMaterials[materialId]->mShininess;
-            double specularConstant = aScene.mMaterials[materialId]->mSpecular;
-            double specularDot = n.Dot(halfAngle);
-            double specular = 255 * (lightIntensity / attenuation) * specularConstant * ((specularDot > 0)?pow(specularDot, shininess):0);
-            specularColour = specularColour + Math::Vector(specular, specular, specular);
-        }
-
-        ret = objectIntersect.mColour * diffuse + Colour(specularColour);
+        ret = CalculateColour(objectIntersect, hitLights, aScene);
     }
 
     return ret;
@@ -73,6 +46,7 @@ ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, Scene& aScene){
 
     if (minIntersection != std::numeric_limits<double>::infinity()){
         ret.mIntersects = true;
+        ret.mRay = aRay;
         ret.mPoint = aRay.GetPoint(minIntersection);
         ret.mColour = (*intersectionShape)->GetColour();
         ret.mNormal = (*intersectionShape)->GetNormal(ret.mPoint);
