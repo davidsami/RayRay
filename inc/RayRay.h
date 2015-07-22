@@ -4,33 +4,15 @@
 #define RAYRAY_H
 
 #include <memory>
-#include <vector>
 #include "Camera.h"
 #include "Light.h"
 #include "Material.h"
 #include "PixelBuffer.h"
+#include "Scene.h"
 #include "Screen.h"
 #include "Settings.h"
+#include "Shader.h"
 #include "Shape.h"
-
-struct Intersection {
-    bool mIntersects;
-};
-
-struct ObjectIntersection : public Intersection {
-    Math::Point mPoint;
-    Colour mColour;
-    Math::Normal mNormal;
-    Math::Ray mReflection;
-    size_t mMaterialId;
-};
-
-struct LightIntersection : public Intersection {
-    Math::Ray mLightRay;
-    // Colour mLightColour;
-    double mAttenuation;
-    double mIntensity;
-};
 
 class RayRay {
 public:
@@ -39,23 +21,17 @@ public:
 private:
     void Init();
     void InitScene();
-    void InitSampler();
 
     void Loop();
-    Colour CastRay(Math::Ray aRay);
-    ObjectIntersection IntersectObjects(Math::Ray aRay);
-    std::vector<LightIntersection> IntersectLights(Math::Point aOrigin, Math::Normal aNormal);
 
     void Output();
 
     std::unique_ptr<Settings> mSettings;
     std::unique_ptr<Screen> mScreen;
-    std::unique_ptr<Camera> mCamera;
     std::unique_ptr<PixelBuffer> mPixels;
+    std::unique_ptr<Shader> mShader;
 
-    std::vector<std::unique_ptr<Shape>> mObjects;
-    std::vector<std::unique_ptr<Light>> mLights;
-    std::vector<std::unique_ptr<Material>> mMaterials;
+    Scene mScene;
 };
 
 #endif
