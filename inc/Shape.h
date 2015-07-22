@@ -14,6 +14,9 @@ public:
     Colour GetColour(){
         return mColour;
     }
+    size_t GetMaterialId(){
+        return mMaterialId;
+    }
 protected:
     Math::Transform mTransform;
     // Temporary. Single colour shapes

@@ -31,6 +31,12 @@ static uint8_t clampAdd(const uint8_t a, const uint8_t b){
     return clamp(sum);
 }
 
+Colour::Colour(Math::Vector aV){
+    r = clamp(aV(0));
+    g = clamp(aV(1));
+    b = clamp(aV(2));
+}
+
 Colour operator*(const double lhs, const Colour &c){
     uint8_t r, g, b;
     r = clamp(lhs * (double)c.r);

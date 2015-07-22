@@ -24,26 +24,30 @@ void RayRay::Init(){
     InitSampler();
 
     //XXX: Test
-    std::unique_ptr<Material> mat(new Material(0, 1, 0));
+    std::unique_ptr<Material> mat(new Material(0, 1, 1, 500));
     mMaterials.push_back(std::move(mat));
 
-    Colour c(255,0,0);
+    Colour c(255,0,127);
     Math::Point p(0,0,5);
     std::unique_ptr<Sphere> test(new Sphere(c, 0, p, 1));
     mObjects.push_back(std::move(test));
 
-    Colour c2(0,255,0);
+    Colour c2(100,255,0);
     Math::Point p2(1,1,3);
     std::unique_ptr<Sphere> test2(new Sphere(c2, 0, p2, 1));
     mObjects.push_back(std::move(test2));
 
     Math::Point p3(1,0,0);
-    std::unique_ptr<Light> light(new Light(5, p3));
+    std::unique_ptr<Light> light(new Light(3, p3));
     mLights.push_back(std::move(light));
 
-    Math::Point p4(-1,0,4);
-    std::unique_ptr<Light> light2(new Light(1.5, p4));
+    Math::Point p4(-1,-0.5,3);
+    std::unique_ptr<Light> light2(new Light(1, p4));
     mLights.push_back(std::move(light2));
+
+    Math::Point p5(2,0,7);
+    std::unique_ptr<Light> light3(new Light(10, p5));
+    mLights.push_back(std::move(light3));
 }
 
 void RayRay::InitScene(){
@@ -72,25 +76,35 @@ Colour RayRay::CastRay(Math::Ray aRay){
 
     if(objectIntersect.mIntersects){
         size_t materialId = objectIntersect.mMaterialId;
-        ret = objectIntersect.mColour;
 
-        double intensity = 0;
         std::vector<LightIntersection> hitLights = IntersectLights(objectIntersect.mPoint, objectIntersect.mNormal);
 
+        double diffuse = 0;
+        Math::Vector specularColour(0,0,0);
         for(auto it = hitLights.begin(); it != hitLights.end(); it++){
+            // Values needed for next parts
             Math::Vector l = (*it).mLightRay.d;
             Math::Normal n = objectIntersect.mNormal;
+            Math::Vector lPlusV = l + aRay.d;
+            Math::Vector halfAngle = lPlusV.Normal();
 
             double lightIntensity = (*it).mIntensity;
             double attenuation = (*it).mAttenuation;
 
+            // Calculate diffuse multiplier
             double diffuseConstant = mMaterials[materialId]->mDiffuse;
-            double dotProduct = l.Dot(n);
-            double diffuse = diffuseConstant * (dotProduct > 0)?dotProduct:0;
-            intensity += lightIntensity / attenuation * (diffuse);
+            double diffuseDot = l.Normal().Dot(n);
+            diffuse += lightIntensity / attenuation * diffuseConstant * ((diffuseDot > 0)?diffuseDot:0);
+
+            // Calculate specular component
+            double shininess = mMaterials[materialId]->mShininess;
+            double specularConstant = mMaterials[materialId]->mSpecular;
+            double specularDot = n.Dot(halfAngle);
+            double specular = 255 * (lightIntensity / attenuation) * specularConstant * ((specularDot > 0)?pow(specularDot, shininess):0);
+            specularColour = specularColour + Math::Vector(specular, specular, specular);
         }
 
-        ret = ret * intensity;
+        ret = objectIntersect.mColour * diffuse + Colour(specularColour);
     }
 
     return ret;
@@ -121,6 +135,7 @@ ObjectIntersection RayRay::IntersectObjects(Math::Ray aRay){
         ret.mPoint = aRay.GetPoint(minIntersection);
         ret.mColour = (*intersectionShape)->GetColour();
         ret.mNormal = (*intersectionShape)->GetNormal(ret.mPoint);
+        ret.mMaterialId = (*intersectionShape)->GetMaterialId();
     }
     return ret;
 }

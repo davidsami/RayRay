@@ -5,10 +5,12 @@
 
 #include <ostream>
 #include <stdint.h>
+#include "Math.h"
 
 struct Colour{
     Colour():r(0), g(0), b(0) {}
     Colour(uint8_t aR, uint8_t aG, uint8_t aB):r(aR), g(aG), b(aB) {}
+    Colour(Math::Vector aV);
     uint8_t r,g,b;
 };
 

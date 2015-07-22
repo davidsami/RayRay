@@ -28,7 +28,6 @@ struct ObjectIntersection : public Intersection {
 struct LightIntersection : public Intersection {
     Math::Ray mLightRay;
     // Colour mLightColour;
-    // Math::Vector mHalfAngle;
     double mAttenuation;
     double mIntensity;
 };
