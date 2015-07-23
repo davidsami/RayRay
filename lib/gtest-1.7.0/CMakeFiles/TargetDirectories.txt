@@ -1,2 +1,0 @@
-/home/arruti/work/RayRay/lib/gtest-1.7.0/CMakeFiles/gtest.dir
-/home/arruti/work/RayRay/lib/gtest-1.7.0/CMakeFiles/gtest_main.dir
