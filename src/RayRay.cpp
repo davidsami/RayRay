@@ -5,6 +5,7 @@
 #include "FileOutput.h"
 #include "RayRay.h"
 #include "Sphere.h"
+#include "Triangle.h"
 
 RayRay::RayRay(std::unique_ptr<Settings> aSettings):
     mSettings(std::move(aSettings))
@@ -47,9 +48,23 @@ void RayRay::Init(){
     std::unique_ptr<Light> light2(new Light(1, p4));
     mScene.mLights.push_back(std::move(light2));
 
-    Math::Point p5(2,0,7);
-    std::unique_ptr<Light> light3(new Light(10, p5));
-    mScene.mLights.push_back(std::move(light3));
+    Colour c3(255,255,255);
+    std::shared_ptr<Vertex> v1 = std::make_shared<Vertex>(Math::Point(5,5,5));
+    std::shared_ptr<Vertex> v2 = std::make_shared<Vertex>(Math::Point(5,-3,5));
+    std::shared_ptr<Vertex> v3 = std::make_shared<Vertex>(Math::Point(-5,-3,5));
+    std::shared_ptr<Vertex> v4 = std::make_shared<Vertex>(Math::Point(-5,5,5));
+
+    std::array<std::shared_ptr<Vertex>,3> verts = {
+        v1,v2,v3
+    };
+    std::unique_ptr<Triangle> tri(new Triangle(c3, 0, verts));
+    mScene.mObjects.push_back(std::move(tri));
+
+    std::array<std::shared_ptr<Vertex>,3> verts2 = {
+        v3,v4,v1
+    };
+    std::unique_ptr<Triangle> tri2(new Triangle(c3, 0, verts2));
+    mScene.mObjects.push_back(std::move(tri2));
 }
 
 void RayRay::InitScene(){

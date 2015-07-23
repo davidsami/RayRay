@@ -81,7 +81,10 @@ namespace Math {
         Eigen::Projective3d t;
         Eigen::Projective3d tinv;
 
-        Transform() = delete;
+        Transform(){
+            t = Eigen::Matrix4d::Identity();
+            tinv = Eigen::Matrix4d::Identity();
+        }
         Transform(Eigen::Projective3d& tin){
             t = tin;
             tinv = tin.inverse();
