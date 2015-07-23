@@ -2,6 +2,19 @@
 
 #include "BlinnPhongShader.h"
 
+BlinnPhongShader::BlinnPhongShader(double aAmbient):mAmbientIntensity(aAmbient){
+}
+
+std::unique_ptr<BlinnPhongShader> BlinnPhongShader::CreateBlinnPhongShader(const Settings& aSettings){
+    std::unique_ptr<BlinnPhongShader> out;
+    double ambient;
+    bool result = aSettings.GetDouble(Settings::kAmbientIntensity, &ambient);
+    if(result)
+        out = std::make_unique<BlinnPhongShader>(ambient);
+
+    return out;
+}
+
 Colour BlinnPhongShader::CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, Scene& aScene){
     Colour ret;
 
@@ -35,6 +48,6 @@ Colour BlinnPhongShader::CalculateColour(ObjectIntersection& aObject, std::vecto
         specularColour = specularColour + Math::Vector(specular, specular, specular);
     }
 
-    ret = aObject.mColour * diffuse + Colour(specularColour);
+    ret = aObject.mColour * (diffuse + mAmbientIntensity) + Colour(specularColour);
     return ret;
 }

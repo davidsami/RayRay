@@ -22,7 +22,7 @@ void RayRay::Run(){
 void RayRay::Init(){
     mScreen = Screen::CreateScreen(*mSettings);
     mPixels = std::make_unique<PixelBuffer>(mScreen->GetY(), mScreen->GetX());
-    mShader = std::make_unique<BlinnPhongShader>();
+    mShader = BlinnPhongShader::CreateBlinnPhongShader(*mSettings);
     InitScene();
 
     //XXX: Test

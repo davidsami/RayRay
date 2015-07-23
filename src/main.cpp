@@ -10,6 +10,7 @@ int main(int argc, char* argv[]){
     s->AddSetting(Settings::kFOV, "90");
     s->AddSetting(Settings::kXPixels, "1920");
     s->AddSetting(Settings::kYPixels, "1080");
+    s->AddSetting(Settings::kAmbientIntensity, "0.1");
 
     RayRay r(std::move(s));
     r.Run();
