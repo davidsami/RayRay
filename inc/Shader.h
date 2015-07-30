@@ -9,7 +9,6 @@
 #include "Material.h"
 #include "PixelBuffer.h"
 #include "Scene.h"
-#include "Screen.h"
 #include "Settings.h"
 #include "Shape.h"
 

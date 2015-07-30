@@ -15,8 +15,8 @@ void FileOutput::OutputPPM(const PixelBuffer& aBuffer, const std::string& aFilen
     fout << width << ' ' << height << std::endl;
     fout << "255" << std::endl;
 
-    for(int y = 0; y < height; y++){
-        for(int x = 0; x < width; x++){
+    for(uint32_t y = 0; y < height; y++){
+        for(uint32_t x = 0; x < width; x++){
             Colour pixel = aBuffer.GetPixel(x,y);
             fout << (int)pixel.r << ' ' << (int)pixel.g << ' ' << (int)pixel.b << ' ' ;
         }

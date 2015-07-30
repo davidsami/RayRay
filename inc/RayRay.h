@@ -9,29 +9,26 @@
 #include "Material.h"
 #include "PixelBuffer.h"
 #include "Scene.h"
-#include "Screen.h"
 #include "Settings.h"
 #include "Shader.h"
 #include "Shape.h"
 
 class RayRay {
 public:
-    RayRay(std::unique_ptr<Settings> aSettings);
+    RayRay(std::unique_ptr<Scene> aScene);
     void Run();
 private:
     void Init();
-    void InitScene();
 
     void Loop();
 
     void Output();
 
-    std::unique_ptr<Settings> mSettings;
-    std::unique_ptr<Screen> mScreen;
-    std::unique_ptr<PixelBuffer> mPixels;
-    std::unique_ptr<Shader> mShader;
+    std::unique_ptr<Scene> mScene;
 
-    Scene mScene;
+    PixelBuffer mPixels;
+
+    std::unique_ptr<Shader> mShader;
 };
 
 #endif

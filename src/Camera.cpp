@@ -4,11 +4,13 @@
 
 Camera::Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim):
     mCameraToWorld(aCameraToWorld),
-    mScreenToCamera(PerspectiveTransform(aFov, 1e-2f, 1000., xDim, yDim))
+    mScreenToCamera(PerspectiveTransform(aFov, 1e-2f, 1000., xDim, yDim)),
+    mX(xDim),
+    mY(yDim)
 {
 }
 
-std::unique_ptr<Camera> Camera::CreateCamera(const Settings& aSettings, const Screen& aScreen){
+std::unique_ptr<Camera> Camera::CreateCamera(const Settings& aSettings, uint32_t xDim, uint32_t yDim){
     std::unique_ptr<Camera> out;
 
     bool fovResult;
@@ -47,8 +49,6 @@ std::unique_ptr<Camera> Camera::CreateCamera(const Settings& aSettings, const Sc
         Eigen::Projective3d t = cameraPosition * cameraRotation;
         Math::Transform transform(t);
 
-        uint32_t xDim = aScreen.GetX();
-        uint32_t yDim = aScreen.GetY();
         out = std::make_unique<Camera>(transform, fov, xDim, yDim);
     }
 

@@ -9,6 +9,13 @@ Triangle:: Triangle(const Colour& aColour, const size_t aMaterialId, std::array<
 {
 }
 
+Triangle::Triangle(std::array<std::shared_ptr<Vertex>,3> aVertices):
+    Shape(Math::Transform(), Colour(0,0,0), 0),
+    mVertices(aVertices),
+    mNormal(Triangle::NormalFromPoints(aVertices))
+{
+}
+
 Math::Normal Triangle::GetNormal(const Math::Point&){
     return mNormal;
 }

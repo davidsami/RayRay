@@ -15,11 +15,12 @@ struct Vertex {
 class Triangle: public Shape {
 public:
     Triangle(const Colour& aColour, const size_t aMaterialId, std::array<std::shared_ptr<Vertex>,3> aVertices);
+    Triangle(std::array<std::shared_ptr<Vertex>,3> aVertices);
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
     virtual Math::Normal GetNormal(const Math::Point&);
+
 private:
     std::array<std::shared_ptr<Vertex>,3> mVertices;
-
     static Math::Normal NormalFromPoints(std::array<std::shared_ptr<Vertex>,3> aVertices);
     Math::Normal mNormal;
 };

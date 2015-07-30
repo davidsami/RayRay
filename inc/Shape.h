@@ -11,6 +11,12 @@ public:
     Shape(const Math::Transform& aTransform, const Colour& aColour, const size_t aMaterialId): mTransform(aTransform), mColour(aColour), mMaterialId(aMaterialId) {}
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection) = 0;
     virtual Math::Normal GetNormal(const Math::Point& aPoint) = 0;
+    void SetColour(const Colour& aColour){
+        mColour = aColour;
+    }
+    void SetMaterialId(const size_t aMaterialId){
+        mMaterialId = aMaterialId;
+    }
     Colour GetColour(){
         return mColour;
     }

@@ -5,18 +5,28 @@
 
 #include "Math.h"
 #include "Settings.h"
-#include "Screen.h"
 
 class Camera {
 public:
     Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim);
     Math::Ray GenerateRay(double x, double y) const;
-    static std::unique_ptr<Camera> CreateCamera(const Settings& aSettings, const Screen& aScreen);
+    static std::unique_ptr<Camera> CreateCamera(const Settings& aSettings, uint32_t xDim, uint32_t yDim);
+
+    uint32_t GetX() const{
+        return mX;
+    }
+    uint32_t GetY() const{
+        return mY;
+    }
 protected:
     static Math::Transform PerspectiveTransform(double aFov, double n, double f, uint32_t xDim, uint32_t yDim);
     Math::Transform mCameraToWorld;
     Math::Transform mScreenToCamera;
     double mFov;
+
+private:
+    uint32_t mX;
+    uint32_t mY;
 };
 
 #endif
