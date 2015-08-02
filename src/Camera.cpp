@@ -60,15 +60,14 @@ Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, ui
     double y = yDim;
     // Normalized screen dimensions
     double aspectRatio = x / y;
-    Eigen::Projective3d s;
-    s = Eigen::Scaling(2./x, -2./y, 1.);
-    s *= Eigen::Scaling(aspectRatio, 1., 1.);
-    s *= Eigen::Translation3d(-x/2., -y/2., 0);
+
+    Math::Transform s = Math::Transform::Scaling(2./x, -2./y, 1.);
+    s *= Math::Transform::Scaling(aspectRatio, 1., 1.);
+    s *= Math::Transform::Translation(-x/2., -y/2., 0);
 
     // Perspective transform
-    Eigen::Projective3d pers;
     double scale = 1. / tanh(M_PI*aFov/2./180.);
-    pers = Eigen::Scaling(scale, scale, 1.);
+    Math::Transform pers = Math::Transform::Scaling(scale, scale, 1.);
 
     double m = f / (f - n);
     Eigen::Matrix4d t;
@@ -76,11 +75,9 @@ Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, ui
          0,   1,   0,   0,
          0,   0,   m,-n*m,
          0,   0,   1,   0;
-    pers *= t;
+    pers *= Math::Transform(t);
 
-    Eigen::Projective3d transform;
-    transform = pers.inverse() * s;
-    return Math::Transform(transform);
+    return pers.Inverse() * s;
 }
 
 Math::Ray Camera::GenerateRay(double x, double y) const{

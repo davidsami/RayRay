@@ -42,15 +42,12 @@ bool Sphere::Intersect(const Math::Ray& aRay, double* aIntersection){
 }
 
 Math::Normal Sphere::GetNormal(const Math::Point& aPoint){
-    Math::Vector point = mTransform.reverse(aPoint).Normal();
-    return Math::Normal(point.d);
+    return Math::Normal(mTransform.reverse(aPoint));
 }
 
 Math::Transform Sphere::TransformationFromPoint(const Math::Point& aCenter){
     double x = aCenter.d[0];
     double y = aCenter.d[1];
     double z = aCenter.d[2];
-    Eigen::Projective3d t;
-    t = Eigen::Translation3d(x,y,z);
-    return Math::Transform(t);
+    return Math::Transform::Translation(x,y,z);
 }

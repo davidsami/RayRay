@@ -61,6 +61,9 @@ namespace Math {
 
     struct Normal : public Vector {
         Normal(): Vector(){}
+        Normal(const Vector& vec){
+            d = vec.d.normalized();
+        }
         Normal(double x, double y, double z):Vector(x,y,z){}
         Normal(Eigen::Vector3d& vin):Vector(vin){}
     };
@@ -85,9 +88,59 @@ namespace Math {
             t = Eigen::Matrix4d::Identity();
             tinv = Eigen::Matrix4d::Identity();
         }
+        Transform(Eigen::Matrix4d& min){
+            t = min;
+            tinv = t.inverse();
+        }
         Transform(Eigen::Projective3d& tin){
             t = tin;
             tinv = tin.inverse();
+        }
+        // To save an inverse if have it already
+        Transform(Eigen::Projective3d& tin, Eigen::Projective3d& tinvin){
+            t = tin;
+            tinv = tinvin;
+        }
+        // For explicit identity
+        static Transform Identity(){
+            return Transform();
+        }
+
+        static Transform Scaling(double x, double y, double z){
+            Eigen::Projective3d n;
+            n = Eigen::Scaling(x,y,z);
+            return Transform(n);
+        }
+        static Transform Translation(double x, double y, double z){
+            Eigen::Projective3d n;
+            n = Eigen::Translation3d(x,y,z);
+            return Transform(n);
+        }
+        static Transform Rotation(double yaw, double pitch, double roll){
+            Eigen::AngleAxisd rollR(roll, Eigen::Vector3d::UnitZ());
+            Eigen::AngleAxisd yawR(yaw, Eigen::Vector3d::UnitY());
+            Eigen::AngleAxisd pitchR(pitch, Eigen::Vector3d::UnitX());
+
+            Eigen::Quaterniond q = rollR * yawR * pitchR;
+            Eigen::Projective3d n;
+            n = q.matrix();
+            return Transform(n);
+        }
+
+        Transform Inverse(){
+            return Transform(tinv, t);
+        }
+        Transform operator*(const Transform &rhs){
+            Eigen::Projective3d n;
+            n = t * rhs.t;
+            Eigen::Projective3d ninv;
+            ninv = rhs.tinv * tinv;
+            return Transform(n, ninv);
+        }
+        Transform& operator*=(const Transform &rhs){
+            t = t * rhs.t;
+            tinv = rhs.tinv * tinv;
+            return *this;
         }
 
         // Transform operations

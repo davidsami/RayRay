@@ -21,28 +21,28 @@ Math::Normal Triangle::GetNormal(const Math::Point&){
 }
 
 bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
-    Eigen::Vector3d e1 = mVertices[1]->p.d - mVertices[0]->p.d;
-    Eigen::Vector3d e2 = mVertices[2]->p.d - mVertices[0]->p.d;
-    Eigen::Vector3d p = aRay.d.d.cross(e2);
-    double det = p.dot(e1);
+    Math::Vector e1 = mVertices[1]->p - mVertices[0]->p;
+    Math::Vector e2 = mVertices[2]->p - mVertices[0]->p;
+    Math::Vector p = aRay.d.Cross(e2);
+    double det = p.Dot(e1);
 
     if(det == 0.)
         return false;
 
     double invDet = 1 / det;
-    Eigen::Vector3d T = aRay.o.d - mVertices[0]->p.d;
-    double u = T.dot(p) * invDet;
+    Math::Vector T = aRay.o - mVertices[0]->p;
+    double u = T.Dot(p) * invDet;
 
     if(u < 0 || u > 1)
         return false;
 
-    Eigen::Vector3d q = T.cross(e1);
-    double v = aRay.d.d.dot(q) * invDet;
+    Math::Vector q = T.Cross(e1);
+    double v = aRay.d.Dot(q) * invDet;
 
     if(v < 0 || (u + v) > 1)
         return false;
 
-    double t = e2.dot(q) * invDet;
+    double t = e2.Dot(q) * invDet;
 
     if(t > 0){
         *aIntersection = t;
@@ -52,8 +52,7 @@ bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
 }
 
 Math::Normal Triangle::NormalFromPoints(std::array<std::shared_ptr<Vertex>,3> aVertices){
-    Eigen::Vector3d e1 = aVertices[1]->p.d - aVertices[0]->p.d;
-    Eigen::Vector3d e2 = aVertices[2]->p.d - aVertices[0]->p.d;
-    Eigen::Vector3d vec = e1.cross(e2).normalized();
-    return Math::Normal(vec);
+    Math::Vector e1 = aVertices[1]->p - aVertices[0]->p;
+    Math::Vector e2 = aVertices[2]->p - aVertices[0]->p;
+    return Math::Normal(e1.Cross(e2));
 }
