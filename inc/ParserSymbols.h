@@ -15,6 +15,7 @@ public: \
 }
 
 DEFINE_PARSER_SYMBOL(CommentSymbol);
+DEFINE_PARSER_SYMBOL(SettingSymbol);
 DEFINE_PARSER_SYMBOL(TransformSymbol);
 DEFINE_PARSER_SYMBOL(CameraSymbol);
 DEFINE_PARSER_SYMBOL(MaterialSymbol);

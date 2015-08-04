@@ -20,12 +20,25 @@ ParserResult CommentSymbol::ParseLine(const std::vector<std::string>& aParameter
 }
 
 
+bool SettingSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
+    return (aParameters[0].compare("set") == 0);
+}
+
+ParserResult SettingSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
+    if(aParameters.size() != 3){
+        return kParseMalformedLine;
+    }
+
+    aOutput.mSettings.AddSetting(aParameters[1], aParameters[2]);
+    return kParseSuccess;
+}
+
+
 bool TransformSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
     return (aParameters[0].compare("t") == 0);
 }
 
 ParserResult TransformSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Transform line" << std::endl;
     if(aParameters.size() != 10){
         return kParseMalformedLine;
     }
@@ -59,7 +72,6 @@ bool CameraSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult CameraSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Camera line" << std::endl;
     if(aParameters.size() != 5){
         return kParseMalformedLine;
     }
@@ -87,7 +99,6 @@ bool MaterialSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult MaterialSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Material line" << std::endl;
     if(aParameters.size() != 5){
         return kParseMalformedLine;
     }
@@ -109,7 +120,6 @@ bool VertexSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult VertexSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Vertex line" << std::endl;
     if(aParameters.size() != 4){
         return kParseMalformedLine;
     }
@@ -131,7 +141,6 @@ bool LightSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult LightSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Light line" << std::endl;
     if(aParameters.size() != 5){
         return kParseMalformedLine;
     }
@@ -154,7 +163,6 @@ bool ColourSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult ColourSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Colour line" << std::endl;
     if(aParameters.size() != 4){
         return kParseMalformedLine;
     }
@@ -175,7 +183,6 @@ bool SphereSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult SphereSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Sphere line" << std::endl;
     if(aParameters.size() != 5){
         return kParseMalformedLine;
     }
@@ -209,7 +216,6 @@ bool FaceSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult FaceSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "Face line" << std::endl;
     if(aParameters.size() != 4){
         return kParseMalformedLine;
     }
@@ -236,7 +242,6 @@ bool ObjSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult ObjSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    std::cout << "OBJ line" << std::endl;
     return kParseSuccess;
 }
 

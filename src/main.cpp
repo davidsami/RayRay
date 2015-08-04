@@ -7,18 +7,22 @@
 #include "OBJParser.h"
 
 int main(int argc, char* argv[]){
-    ParserOBJPrimitive obj;
-    ParserResult result = OBJParser::ParseOBJFile("test.obj", obj);
+    std::unique_ptr<Scene> scene = std::make_unique<Scene>();
 
-    Scene output;
+    if(argc >= 2) {
+        Parser parse;
+        ParserResult result;
+        result = parse.ParseRayFile(std::string(argv[1]), *scene);
 
-    Parser parse;
-    parse.ParseRayFile("test.ray", output);
-    /*
-    std::unique_ptr<Scene> s(new Scene);
-    RayRay r(std::move(s));
-    r.Run();
-    */
+        if(result == kParseSuccess){
+            RayRay ray(std::move(scene));
+            ray.Run();
+        } else {
+            std::cout << "Parse Error" << std::endl;
+        }
+    } else {
+        std::cout << "No file Specified" << std::endl;
+    }
     return 0;
 } 
 

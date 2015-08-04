@@ -5,6 +5,7 @@
 
 Parser::Parser(){
     mSymbolParsers.push_back(std::make_unique<CommentSymbol>());
+    mSymbolParsers.push_back(std::make_unique<SettingSymbol>());
     mSymbolParsers.push_back(std::make_unique<TransformSymbol>());
     mSymbolParsers.push_back(std::make_unique<CameraSymbol>());
     mSymbolParsers.push_back(std::make_unique<MaterialSymbol>());
@@ -41,7 +42,6 @@ ParserResult Parser::ParseRayFile(const std::string& aFilename, Scene& aOutput){
                 }
             }
         } else {
-            std::cout << "Ignored line" << std::endl;
             ret = kParseIgnore;
         }
 

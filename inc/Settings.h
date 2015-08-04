@@ -11,16 +11,6 @@ public:
     Settings() = default;
 
     // Constants for ease
-    static const std::string kXPixels;
-    static const std::string kYPixels;
-    static const std::string kFOV;
-    static const std::string kXCamera;
-    static const std::string kYCamera;
-    static const std::string kZCamera;
-    static const std::string kYawCamera;
-    static const std::string kPitchCamera;
-    static const std::string kRollCamera;
-    static const std::string kAmbientLight;
     static const std::string kAmbientIntensity;
     static const std::string kBackgroundColour;
     static const std::string kOutputFile;
