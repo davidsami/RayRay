@@ -6,7 +6,7 @@
 
 Colour Shader::ShadePixel(uint32_t x, uint32_t y, Scene& aScene){
     // Generate one ray for now
-    Math::Ray ray = aScene.mCamera->GenerateRay(x, y);
+    Math::Ray ray = aScene.mCamera.GenerateRay(x, y);
     return CastRay(ray, aScene);
 }
 

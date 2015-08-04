@@ -16,7 +16,7 @@ Parser::Parser(){
     mSymbolParsers.push_back(std::make_unique<ObjSymbol>());
 }
 
-ParserResult Parser::ParseRayFile(const std::string& aFilename, ParserCollection& aOutput){
+ParserResult Parser::ParseRayFile(const std::string& aFilename, Scene& aOutput){
     std::fstream fin(aFilename, std::ios_base::in);
 
     std::cout << "Opening Ray file: " << aFilename << std::endl;
@@ -54,10 +54,10 @@ ParserResult Parser::ParseRayFile(const std::string& aFilename, ParserCollection
 
     std::cout << "Transforms: " << aOutput.mTransforms.size() << std::endl;
     std::cout << "Materials: " << aOutput.mMaterials.size() << std::endl;
-    std::cout << "Vertices: " << aOutput.mScene.mVertices.size() << std::endl;
+    std::cout << "Vertices: " << aOutput.mVertices.size() << std::endl;
     std::cout << "Colours: " << aOutput.mColours.size() << std::endl;
-    std::cout << "Shapes: " << aOutput.mScene.mObjects.size() << std::endl;
-    std::cout << "Lights: " << aOutput.mScene.mLights.size() << std::endl;
+    std::cout << "Shapes: " << aOutput.mObjects.size() << std::endl;
+    std::cout << "Lights: " << aOutput.mLights.size() << std::endl;
     return kParseSuccess;
 }
 

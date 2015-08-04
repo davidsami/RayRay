@@ -40,19 +40,10 @@ enum ParserResult{
     kParseUnknown,
 };
 
-struct ParserCollection {
-    // Intermediate collections
-    std::vector<Math::Transform> mTransforms;
-    std::vector<Material> mMaterials;
-    std::vector<Colour> mColours;
-
-    Scene mScene;
-};
-
 class Symbol {
 public:
     virtual bool CheckSymbol(const std::vector<std::string>& aParameters)=0;
-    virtual ParserResult ParseLine(const std::vector<std::string>& aParameters, ParserCollection& aOutput)=0;
+    virtual ParserResult ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput)=0;
 protected:
     static bool GetInt(const std::string& aString, int* aOut);
     static bool GetUnsigned(const std::string& aString, uint32_t* aOut);
@@ -62,7 +53,7 @@ protected:
 class Parser {
 public:
     Parser();
-    ParserResult ParseRayFile(const std::string& aFilename, ParserCollection& aOutput);
+    ParserResult ParseRayFile(const std::string& aFilename, Scene& aOutput);
     static std::vector<std::string> SplitLine(std::stringstream& aLine, char aDelim);
 private:
     std::vector<std::unique_ptr<Symbol>> mSymbolParsers;

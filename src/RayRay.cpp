@@ -9,7 +9,7 @@
 
 RayRay::RayRay(std::unique_ptr<Scene> aScene):
     mScene(std::move(aScene)),
-    mPixels(mScene->mCamera->GetY(), mScene->mCamera->GetX())
+    mPixels(mScene->mCamera.GetY(), mScene->mCamera.GetX())
 {
 }
 
@@ -26,8 +26,8 @@ void RayRay::Init(){
 }
 
 void RayRay::Loop(){
-    for(uint32_t y = 0; y < mScene->mCamera->GetY(); y++){
-        for(uint32_t x = 0; x < mScene->mCamera->GetX(); x++){
+    for(uint32_t y = 0; y < mScene->mCamera.GetY(); y++){
+        for(uint32_t x = 0; x < mScene->mCamera.GetX(); x++){
             mPixels.Get(x,y) = mShader->ShadePixel(x, y, *mScene);
         }
     }

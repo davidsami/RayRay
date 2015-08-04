@@ -11,7 +11,7 @@
 class S : public Symbol { \
 public: \
     virtual bool CheckSymbol(const std::vector<std::string>& aParameters); \
-    virtual ParserResult ParseLine(const std::vector<std::string>& aParameters, ParserCollection& aOutput); \
+    virtual ParserResult ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput); \
 }
 
 DEFINE_PARSER_SYMBOL(CommentSymbol);

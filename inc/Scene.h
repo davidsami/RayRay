@@ -12,12 +12,20 @@
 #include "Triangle.h"
 
 struct Scene {
+    // Objects used by all shapes
+    std::vector<std::shared_ptr<Math::Transform>> mTransforms;
+    std::vector<std::shared_ptr<Material>> mMaterials;
+    std::vector<std::shared_ptr<Colour>> mColours;
+
+    // Vertices for Triangles
     std::vector<std::shared_ptr<Vertex>> mVertices;
 
+    // Scene
     std::vector<std::unique_ptr<Shape>> mObjects;
     std::vector<std::unique_ptr<Light>> mLights;
 
-    std::unique_ptr<Camera> mCamera;
+    // Globals
+    Camera mCamera;
     Settings mSettings;
 };
 

@@ -10,7 +10,8 @@ int main(int argc, char* argv[]){
     ParserOBJPrimitive obj;
     ParserResult result = OBJParser::ParseOBJFile("test.obj", obj);
 
-    ParserCollection output;
+    Scene output;
+
     Parser parse;
     parse.ParseRayFile("test.ray", output);
     /*

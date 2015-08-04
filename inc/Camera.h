@@ -8,7 +8,8 @@
 
 class Camera {
 public:
-    Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim);
+    Camera();
+    void Init(std::shared_ptr<Math::Transform>& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim);
     Math::Ray GenerateRay(double x, double y) const;
 
     uint32_t GetX() const{
@@ -19,7 +20,7 @@ public:
     }
 protected:
     static Math::Transform PerspectiveTransform(double aFov, double n, double f, uint32_t xDim, uint32_t yDim);
-    Math::Transform mCameraToWorld;
+    std::shared_ptr<Math::Transform> mCameraToWorld;
     Math::Transform mScreenToCamera;
     double mFov;
 

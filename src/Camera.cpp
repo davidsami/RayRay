@@ -2,12 +2,26 @@
 
 #include "Camera.h"
 
-Camera::Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim):
-    mCameraToWorld(aCameraToWorld),
-    mScreenToCamera(PerspectiveTransform(aFov, 1e-2f, 1000., xDim, yDim)),
-    mX(xDim),
-    mY(yDim)
+#define CAMERA_DEFAULT_FOV (90)
+#define CAMERA_DEFAULT_X (640)
+#define CAMERA_DEFAULT_Y (480)
+#define CAMERA_CLOSE_PLANE (1e-2f)
+#define CAMERA_FAR_PLANE (1000.)
+
+Camera::Camera():
+    mCameraToWorld(std::make_shared<Math::Transform>(Math::Transform::Identity())),
+    mScreenToCamera(PerspectiveTransform(CAMERA_DEFAULT_FOV, CAMERA_CLOSE_PLANE, CAMERA_FAR_PLANE, CAMERA_DEFAULT_X, CAMERA_DEFAULT_Y)),
+    mX(CAMERA_DEFAULT_X),
+    mY(CAMERA_DEFAULT_Y)
 {
+}
+
+void Camera::Init(std::shared_ptr<Math::Transform>& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim)
+{
+    mCameraToWorld = aCameraToWorld;
+    mScreenToCamera = PerspectiveTransform(aFov, CAMERA_CLOSE_PLANE, CAMERA_FAR_PLANE, xDim, yDim);
+    mX = xDim;
+    mY = yDim;
 }
 
 Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, uint32_t xDim, uint32_t yDim){
@@ -41,5 +55,5 @@ Math::Ray Camera::GenerateRay(double x, double y) const{
 
     Math::Ray ray(Math::Point(0,0,0), Math::Vector(cameraPoint));
 
-    return mCameraToWorld(ray);
+    return (*mCameraToWorld)(ray);
 }
