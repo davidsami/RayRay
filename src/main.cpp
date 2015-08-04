@@ -9,6 +9,10 @@
 int main(int argc, char* argv[]){
     ParserOBJPrimitive obj;
     ParserResult result = OBJParser::ParseOBJFile("test.obj", obj);
+
+    ParserCollection output;
+    Parser parse;
+    parse.ParseRayFile("test.ray", output);
     /*
     std::unique_ptr<Scene> s(new Scene);
     RayRay r(std::move(s));

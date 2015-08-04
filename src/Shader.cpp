@@ -50,7 +50,7 @@ ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, Scene& aScene){
         ret.mPoint = aRay.GetPoint(minIntersection);
         ret.mColour = (*intersectionShape)->GetColour();
         ret.mNormal = (*intersectionShape)->GetNormal(ret.mPoint);
-        ret.mMaterialId = (*intersectionShape)->GetMaterialId();
+        ret.mMaterial = (*intersectionShape)->GetMaterial();
     }
     return ret;
 }

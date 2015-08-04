@@ -27,7 +27,7 @@ struct ObjectIntersection : public Intersection {
     Colour mColour;
     Math::Normal mNormal;
     // Math::Ray mReflection;
-    size_t mMaterialId;
+    Material mMaterial;
 };
 
 struct LightIntersection : public Intersection {

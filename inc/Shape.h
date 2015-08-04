@@ -3,31 +3,32 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
+#include "Material.h"
 #include "Math.h"
 #include "Colour.h"
 
 class Shape {
 public:
-    Shape(const Math::Transform& aTransform, const Colour& aColour, const size_t aMaterialId): mTransform(aTransform), mColour(aColour), mMaterialId(aMaterialId) {}
+    Shape(const Math::Transform& aTransform, const Colour& aColour, const Material aMaterial): mTransform(aTransform), mColour(aColour), mMaterial(aMaterial) {}
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection) = 0;
     virtual Math::Normal GetNormal(const Math::Point& aPoint) = 0;
     void SetColour(const Colour& aColour){
         mColour = aColour;
     }
-    void SetMaterialId(const size_t aMaterialId){
-        mMaterialId = aMaterialId;
+    void SetMaterial(const Material aMaterial){
+        mMaterial = aMaterial;
     }
     Colour GetColour(){
         return mColour;
     }
-    size_t GetMaterialId(){
-        return mMaterialId;
+    Material GetMaterial(){
+        return mMaterial;
     }
 protected:
     Math::Transform mTransform;
     // Temporary. Single colour shapes
     Colour mColour;
-    size_t mMaterialId;
+    Material mMaterial;
 };
 
 #endif

@@ -2,15 +2,15 @@
 
 #include <Triangle.h>
 
-Triangle:: Triangle(const Colour& aColour, const size_t aMaterialId, std::array<std::shared_ptr<Vertex>,3> aVertices):
-    Shape(Math::Transform(), aColour, aMaterialId),
+Triangle:: Triangle(const Colour& aColour, const Material aMaterial, std::array<std::shared_ptr<Vertex>,3> aVertices):
+    Shape(Math::Transform(), aColour, aMaterial),
     mVertices(aVertices),
     mNormal(Triangle::NormalFromPoints(aVertices))
 {
 }
 
 Triangle::Triangle(std::array<std::shared_ptr<Vertex>,3> aVertices):
-    Shape(Math::Transform(), Colour(0,0,0), 0),
+    Shape(Math::Transform(), Colour(0,0,0), Material()),
     mVertices(aVertices),
     mNormal(Triangle::NormalFromPoints(aVertices))
 {

@@ -10,7 +10,6 @@ class Camera {
 public:
     Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim);
     Math::Ray GenerateRay(double x, double y) const;
-    static std::unique_ptr<Camera> CreateCamera(const Settings& aSettings, uint32_t xDim, uint32_t yDim);
 
     uint32_t GetX() const{
         return mX;

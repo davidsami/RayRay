@@ -10,51 +10,6 @@ Camera::Camera(Math::Transform& aCameraToWorld, double aFov, uint32_t xDim, uint
 {
 }
 
-std::unique_ptr<Camera> Camera::CreateCamera(const Settings& aSettings, uint32_t xDim, uint32_t yDim){
-    std::unique_ptr<Camera> out;
-
-    bool fovResult;
-    double fov;
-    fovResult = aSettings.GetDouble(Settings::kFOV, &fov);
-
-    bool xCamResult, yCamResult, zCamResult;
-    double xCam, yCam, zCam;
-    xCamResult = aSettings.GetDouble(Settings::kXCamera, &xCam);
-    yCamResult = aSettings.GetDouble(Settings::kYCamera, &yCam);
-    zCamResult = aSettings.GetDouble(Settings::kZCamera, &zCam);
-
-    bool yawCamResult, pitchCamResult, rollCamResult;
-    double yawCam, pitchCam, rollCam;
-    yawCamResult = aSettings.GetDouble(Settings::kYawCamera, &yawCam);
-    pitchCamResult = aSettings.GetDouble(Settings::kPitchCamera, &pitchCam);
-    rollCamResult = aSettings.GetDouble(Settings::kRollCamera, &rollCam);
-
-    if(fovResult &&
-       xCamResult &&
-       yCamResult &&
-       zCamResult &&
-       yawCamResult &&
-       pitchCamResult &&
-       rollCamResult)
-    {
-        Eigen::Projective3d cameraPosition;
-        cameraPosition = Eigen::Translation3d(xCam, yCam, zCam);
-
-        Eigen::Projective3d cameraRotation;
-        cameraRotation = 
-              Eigen::AngleAxisd(yawCam, Eigen::Vector3d::UnitZ())
-            * Eigen::AngleAxisd(pitchCam, Eigen::Vector3d::UnitY())
-            * Eigen::AngleAxisd(rollCam, Eigen::Vector3d::UnitX());
-
-        Eigen::Projective3d t = cameraPosition * cameraRotation;
-        Math::Transform transform(t);
-
-        out = std::make_unique<Camera>(transform, fov, xDim, yDim);
-    }
-
-    return out;
-}
-
 Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, uint32_t xDim, uint32_t yDim){
     double x = xDim;
     double y = yDim;
