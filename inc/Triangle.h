@@ -14,7 +14,7 @@ struct Vertex {
 
 class Triangle: public Shape {
 public:
-    Triangle(const Colour& aColour, const Material aMaterial, std::array<std::shared_ptr<Vertex>,3> aVertices);
+    Triangle(std::shared_ptr<Colour> aColour, std::shared_ptr<Material> aMaterial, std::array<std::shared_ptr<Vertex>,3> aVertices);
     Triangle(std::array<std::shared_ptr<Vertex>,3> aVertices);
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
     virtual Math::Normal GetNormal(const Math::Point&);

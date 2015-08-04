@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "ParserSymbols.h"
+#include "Sphere.h"
 
 // Simple macro for dealing with return of Get calls
 #define REQUIRE_PARSE_SUCCESS(cond) \
@@ -175,28 +176,30 @@ bool SphereSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 
 ParserResult SphereSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
     std::cout << "Sphere line" << std::endl;
-    if(aParameters.size() != 4){
+    if(aParameters.size() != 5){
         return kParseMalformedLine;
     }
 
     uint32_t mat, col, trans;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[1], &mat));
-    if(mat >= aOutput.mMaterials.size())
-        return kParseNonExistantReference;
-    std::shared_ptr<Material> material = aOutput.mMaterials[mat];
-
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &col));
+    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[1], &col));
     if(col >= aOutput.mColours.size())
         return kParseNonExistantReference;
     std::shared_ptr<Colour> colour = aOutput.mColours[col];
+
+    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &mat));
+    if(mat >= aOutput.mMaterials.size())
+        return kParseNonExistantReference;
+    std::shared_ptr<Material> material = aOutput.mMaterials[mat];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &trans));
     if(trans >= aOutput.mTransforms.size())
         return kParseNonExistantReference;
     std::shared_ptr<Math::Transform> transform = aOutput.mTransforms[trans];
 
-    // TODO: Fix later
-    //aOutput.mObjects.push_back(std::make_unique<Sphere>(material, colour, ));
+    double radius;
+    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &radius));
+
+    aOutput.mObjects.push_back(std::make_unique<Sphere>(colour, material, transform, radius));
     return kParseSuccess;
 }
 

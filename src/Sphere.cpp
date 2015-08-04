@@ -2,15 +2,15 @@
 
 #include "Sphere.h"
 
-Sphere::Sphere(const Colour& aColour, const Material aMaterial, const Math::Point& aCenter, double aRadius):
-    Shape(Sphere::TransformationFromPoint(aCenter), aColour, aMaterial),
+Sphere::Sphere(std::shared_ptr<Colour> aColour, std::shared_ptr<Material> aMaterial, std::shared_ptr<Math::Transform> aTransform, double aRadius):
+    Shape(aColour, aMaterial, aTransform),
     mRadius(aRadius)
 {
 }
 
 bool Sphere::Intersect(const Math::Ray& aRay, double* aIntersection){
     // Bring the ray to the object's space
-    Math::Ray r = mTransform.reverse(aRay);
+    Math::Ray r = mTransform->reverse(aRay);
 
     // Solve quadratic by subbing in d + t * o in X^2 + Y^2 + Z^2 = R^2
     // and solving for t
@@ -42,7 +42,7 @@ bool Sphere::Intersect(const Math::Ray& aRay, double* aIntersection){
 }
 
 Math::Normal Sphere::GetNormal(const Math::Point& aPoint){
-    return Math::Normal(mTransform.reverse(aPoint));
+    return Math::Normal(mTransform->reverse(aPoint));
 }
 
 Math::Transform Sphere::TransformationFromPoint(const Math::Point& aCenter){

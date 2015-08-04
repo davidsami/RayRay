@@ -9,26 +9,40 @@
 
 class Shape {
 public:
-    Shape(const Math::Transform& aTransform, const Colour& aColour, const Material aMaterial): mTransform(aTransform), mColour(aColour), mMaterial(aMaterial) {}
+    Shape(std::shared_ptr<Colour> aColour, std::shared_ptr<Material> aMaterial, std::shared_ptr<Math::Transform> aTransform): 
+        mColour(aColour),
+        mMaterial(aMaterial),
+        mTransform(aTransform)
+    {
+    }
+
+    Shape(): 
+        mColour(std::make_shared<Colour>(0,0,0)),
+        mMaterial(std::make_shared<Material>()),
+        mTransform(std::make_shared<Math::Transform>())
+    {
+    }
+
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection) = 0;
     virtual Math::Normal GetNormal(const Math::Point& aPoint) = 0;
-    void SetColour(const Colour& aColour){
+    void SetColour(std::shared_ptr<Colour> aColour){
         mColour = aColour;
     }
-    void SetMaterial(const Material aMaterial){
+    void SetMaterial(std::shared_ptr<Material> aMaterial){
         mMaterial = aMaterial;
     }
     Colour GetColour(){
-        return mColour;
+        return *mColour;
     }
     Material GetMaterial(){
-        return mMaterial;
+        return *mMaterial;
     }
 protected:
-    Math::Transform mTransform;
     // Temporary. Single colour shapes
-    Colour mColour;
-    Material mMaterial;
+    std::shared_ptr<Colour> mColour;
+    std::shared_ptr<Material> mMaterial;
+
+    std::shared_ptr<Math::Transform> mTransform;
 };
 
 #endif
