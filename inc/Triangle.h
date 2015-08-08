@@ -20,6 +20,9 @@ public:
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
     virtual Math::Normal GetNormal(const Math::Point&);
 
+protected:
+    virtual void OnTransformChange();
+
 private:
     std::array<Vertex,3> mVertices;
     static Math::Normal NormalFromPoints(std::array<Vertex,3>& aVertices);

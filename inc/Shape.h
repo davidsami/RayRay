@@ -27,12 +27,15 @@ public:
     virtual Math::Normal GetNormal(const Math::Point& aPoint) = 0;
     void SetColour(Colour aColour){
         mColour = aColour;
+        OnColourChange();
     }
     void SetMaterial(Material aMaterial){
         mMaterial = aMaterial;
+        OnMaterialChange();
     }
     void SetTransform(Math::Transform aTransform){
         mTransform = aTransform;
+        OnTransformChange();
     }
     Colour GetColour(){
         return mColour;
@@ -45,6 +48,9 @@ protected:
     Colour mColour;
     Material mMaterial;
     Math::Transform mTransform;
+    virtual void OnColourChange() {}
+    virtual void OnMaterialChange() {}
+    virtual void OnTransformChange() {}
 };
 
 #endif
