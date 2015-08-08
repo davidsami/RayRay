@@ -252,7 +252,6 @@ ParserResult ObjSymbol::ParseLine(const std::vector<std::string>& aParameters, S
     if(aParameters.size() != 5){
         return kParseMalformedLine;
     }
-    std::cout << mDirectory << std::endl;
     std::string filename = mDirectory + aParameters[1];
 
     uint32_t mat, col, trans;
@@ -276,7 +275,7 @@ ParserResult ObjSymbol::ParseLine(const std::vector<std::string>& aParameters, S
 
     Scene primitive;
 
-    OBJParser obj(filename);
+    OBJParser obj(filename, mPrintIndent + 1);
     ParserResult result;
     result = obj.ParseFile(primitive);
 

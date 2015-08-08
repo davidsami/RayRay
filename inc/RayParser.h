@@ -7,7 +7,7 @@
 
 class RayParser: public Parser {
 public:
-    RayParser(const std::string& aFilename);
+    RayParser(const std::string& aFilename, uint32_t aPrintIndent);
 };
 
 #endif

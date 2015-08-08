@@ -3,15 +3,17 @@
 #include "Parser.h"
 #include "ParserSymbols.h"
 
-Parser::Parser(const std::string& aFilename):
-    mFilename(aFilename)
+Parser::Parser(const std::string& aFilename, uint32_t aPrintIndent):
+    mFilename(aFilename),
+    mIndentString(std::string(aPrintIndent * 4, ' ')),
+    mPrintIndent(aPrintIndent)
 {
 }
 
 ParserResult Parser::ParseFile(Scene& aOutput){
     std::fstream fin(mFilename, std::ios_base::in);
 
-    std::cout << "Opening file: " << mFilename << std::endl;
+    std::cout << mIndentString << "Opening file: " << mFilename << std::endl;
     if(!fin.is_open())
         return kParseFileError;
 
@@ -37,20 +39,20 @@ ParserResult Parser::ParseFile(Scene& aOutput){
         }
 
         if(ret != ParserResult::kParseSuccess && ret != ParserResult::kParseIgnore){
-            std::cout << "Error on line " << counter << ": " << line << std::endl;
-            std::cout << "Error: " << ret << std::endl;
+            std::cout << mIndentString << "Error on line " << counter << ": " << line << std::endl;
+            std::cout << mIndentString << "Error: " << ret << std::endl;
             return ret;
         }
         counter++;
     }
 
-    std::cout << "Results:" << std::endl;
-    std::cout << "    Transforms: " << aOutput.mTransforms.size() << std::endl;
-    std::cout << "    Materials: " << aOutput.mMaterials.size() << std::endl;
-    std::cout << "    Vertices: " << aOutput.mVertices.size() << std::endl;
-    std::cout << "    Colours: " << aOutput.mColours.size() << std::endl;
-    std::cout << "    Shapes: " << aOutput.mObjects.size() << std::endl;
-    std::cout << "    Lights: " << aOutput.mLights.size() << std::endl;
+    std::cout << mIndentString << "Results:" << std::endl;
+    std::cout << mIndentString << "Transforms: " << aOutput.mTransforms.size() << std::endl;
+    std::cout << mIndentString << "Materials: " << aOutput.mMaterials.size() << std::endl;
+    std::cout << mIndentString << "Vertices: " << aOutput.mVertices.size() << std::endl;
+    std::cout << mIndentString << "Colours: " << aOutput.mColours.size() << std::endl;
+    std::cout << mIndentString << "Shapes: " << aOutput.mObjects.size() << std::endl;
+    std::cout << mIndentString << "Lights: " << aOutput.mLights.size() << std::endl;
 
     return kParseSuccess;
 }

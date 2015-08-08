@@ -27,11 +27,12 @@ DEFINE_PARSER_SYMBOL(FaceSymbol);
 
 class ObjSymbol : public Symbol {
 public:
-    ObjSymbol(std::string aDirectory):mDirectory(aDirectory) {}
+    ObjSymbol(std::string aDirectory, uint32_t aPrintIndent):mDirectory(aDirectory), mPrintIndent(aPrintIndent) {}
     virtual bool CheckSymbol(const std::vector<std::string>& aParameters);
     virtual ParserResult ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput);
 private:
     std::string mDirectory;
+    uint32_t mPrintIndent;
 };
 
 // The catchall symbol for OBJ

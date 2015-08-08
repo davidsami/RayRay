@@ -7,7 +7,7 @@
 
 class OBJParser: public Parser {
 public:
-    OBJParser(const std::string& aFilename);
+    OBJParser(const std::string& aFilename, uint32_t aPrintIndent);
 };
 
 #endif

@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
     Scene scene;
 
     if(argc >= 2) {
-        RayParser parse = RayParser(std::string(argv[1]));
+        RayParser parse = RayParser(std::string(argv[1]), 0);
         ParserResult result;
         result = parse.ParseFile(scene);
 

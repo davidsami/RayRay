@@ -52,12 +52,14 @@ protected:
 
 class Parser {
 public:
-    Parser(const std::string& aFilename);
+    Parser(const std::string& aFilename, uint32_t aPrintIndent);
     ParserResult ParseFile(Scene& aOutput);
     static std::vector<std::string> SplitLine(std::stringstream& aLine, char aDelim);
 protected:
     std::vector<std::unique_ptr<Symbol>> mSymbolParsers;
     std::string mFilename;
+    std::string mIndentString;
+    uint32_t mPrintIndent;
 };
 
 #endif

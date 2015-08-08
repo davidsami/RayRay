@@ -3,8 +3,8 @@
 #include "ParserSymbols.h"
 #include "RayParser.h"
 
-RayParser::RayParser(const std::string& aFilename):
-    Parser(aFilename)
+RayParser::RayParser(const std::string& aFilename, uint32_t aPrintIndent):
+    Parser(aFilename, aPrintIndent)
 {
     std::string directory;
     size_t slashDirPos = aFilename.find_last_of('/');
@@ -23,5 +23,5 @@ RayParser::RayParser(const std::string& aFilename):
     mSymbolParsers.push_back(std::make_unique<ColourSymbol>());
     mSymbolParsers.push_back(std::make_unique<SphereSymbol>());
     mSymbolParsers.push_back(std::make_unique<FaceSymbol>());
-    mSymbolParsers.push_back(std::make_unique<ObjSymbol>(directory));
+    mSymbolParsers.push_back(std::make_unique<ObjSymbol>(directory, aPrintIndent));
 }
