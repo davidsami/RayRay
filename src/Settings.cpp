@@ -5,6 +5,7 @@
 const std::string Settings::kAmbientIntensity = "ambient_intensity";
 const std::string Settings::kBackgroundColour = "background_colour";
 const std::string Settings::kOutputFile = "output_file";
+const std::string Settings::kNumThreads = "num_threads";
 
 const std::map<std::string, std::string> Settings::kDefaults = {
     {Settings::kAmbientIntensity, "0"},

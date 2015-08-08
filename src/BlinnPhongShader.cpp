@@ -5,12 +5,12 @@
 BlinnPhongShader::BlinnPhongShader(double aAmbient):mAmbientIntensity(aAmbient){
 }
 
-std::unique_ptr<BlinnPhongShader> BlinnPhongShader::CreateBlinnPhongShader(const Settings& aSettings){
-    std::unique_ptr<BlinnPhongShader> out;
+std::shared_ptr<BlinnPhongShader> BlinnPhongShader::CreateBlinnPhongShader(const Settings& aSettings){
+    std::shared_ptr<BlinnPhongShader> out;
     double ambient;
     bool result = aSettings.GetDouble(Settings::kAmbientIntensity, &ambient);
     if(result)
-        out = std::make_unique<BlinnPhongShader>(ambient);
+        out = std::make_shared<BlinnPhongShader>(ambient);
 
     return out;
 }

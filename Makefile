@@ -12,7 +12,7 @@ OBJECTS=$(SOURCES:%.cpp=$(BIN_DIR)/%.o)
 EXECUTABLE=RayRay
 
 IFLAGS=$(INCLUDES)
-FLAGS=-O3
+FLAGS=-pthread -O3
 CFLAGS=$(FLAGS) -c -Wall -Wno-deprecated -std=c++14
 LFLAGS=$(FLAGS)
 

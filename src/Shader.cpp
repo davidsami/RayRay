@@ -4,12 +4,6 @@
 #include <limits>
 #include "Shader.h"
 
-Colour Shader::ShadePixel(uint32_t x, uint32_t y, const Scene& aScene){
-    // Generate one ray for now
-    Math::Ray ray = aScene.mCamera.GenerateRay(x, y);
-    return CastRay(ray, aScene);
-}
-
 Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene){
     ObjectIntersection objectIntersect = IntersectObjects(aRay, aScene);
 

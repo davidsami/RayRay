@@ -12,6 +12,7 @@
 #include "Settings.h"
 #include "Shader.h"
 #include "Shape.h"
+#include "ThreadPool.h"
 
 class RayRay {
 public:
@@ -25,10 +26,10 @@ private:
     void Output();
 
     std::shared_ptr<const Scene> mScene;
-
     PixelBuffer mPixels;
+    std::shared_ptr<Shader> mShader;
 
-    std::unique_ptr<Shader> mShader;
+    ThreadPool mPool;
 };
 
 #endif

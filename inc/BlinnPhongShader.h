@@ -7,7 +7,7 @@
 
 class BlinnPhongShader: public Shader {
 public:
-    static std::unique_ptr<BlinnPhongShader> CreateBlinnPhongShader(const Settings& aSettings);
+    static std::shared_ptr<BlinnPhongShader> CreateBlinnPhongShader(const Settings& aSettings);
     BlinnPhongShader(double aAmbient);
     BlinnPhongShader()=delete;
 protected:

@@ -41,9 +41,6 @@ struct LightIntersection : public Intersection {
 
 class Shader {
 public:
-    Colour ShadePixel(uint32_t x, uint32_t y, const Scene& aScene);
-
-private:
     Colour CastRay(Math::Ray aRay, const Scene& aScene);
 
 protected:
