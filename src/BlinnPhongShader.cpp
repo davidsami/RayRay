@@ -2,20 +2,27 @@
 
 #include "BlinnPhongShader.h"
 
-BlinnPhongShader::BlinnPhongShader(double aAmbient, uint32_t aMaxBounces):mAmbientIntensity(aAmbient), mMaxBounces(aMaxBounces)
+BlinnPhongShader::BlinnPhongShader(Colour aBackgroundColour, double aAmbient, uint32_t aMaxBounces):
+    Shader(aBackgroundColour),
+    mAmbientIntensity(aAmbient),
+    mMaxBounces(aMaxBounces)
 {
 }
 
 std::shared_ptr<BlinnPhongShader> BlinnPhongShader::CreateBlinnPhongShader(const Settings& aSettings){
     std::shared_ptr<BlinnPhongShader> out;
+
+    Colour backgroundColour;
+    bool colourResult = aSettings.GetColour(Settings::kBackgroundColour, &backgroundColour);
+
     double ambient;
     bool ambientResult = aSettings.GetDouble(Settings::kAmbientIntensity, &ambient);
 
     uint32_t maxReflectBounces;
     bool bounceResult = aSettings.GetUnsigned(Settings::kMaxReflectBounces, &maxReflectBounces);
 
-    if(ambientResult && bounceResult)
-        out = std::make_shared<BlinnPhongShader>(ambient, maxReflectBounces);
+    if(colourResult && ambientResult && bounceResult)
+        out = std::make_shared<BlinnPhongShader>(backgroundColour, ambient, maxReflectBounces);
 
     return out;
 }

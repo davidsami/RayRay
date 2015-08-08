@@ -3,8 +3,9 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <string>
 #include <map>
+#include <string>
+#include "Colour.h"
 
 class Settings {
 public:
@@ -26,6 +27,7 @@ public:
     bool GetInt(const std::string& aKey, int* aOut) const;
     bool GetUnsigned(const std::string& aKey, uint32_t* aOut) const;
     bool GetDouble(const std::string& aKey, double* aOut) const;
+    bool GetColour(const std::string& aKey, Colour* aOut) const;
 
 private:
     std::map<std::string, std::string> mSettings;

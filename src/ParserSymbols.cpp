@@ -1,6 +1,7 @@
 // David Sami 2015
 
 #include <iostream>
+#include "Misc.h"
 #include "OBJParser.h"
 #include "ParserSymbols.h"
 #include "Sphere.h"
@@ -46,21 +47,21 @@ ParserResult TransformSymbol::ParseLine(const std::vector<std::string>& aParamet
     Math::Transform t;
 
     double x, y, z;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[1], &x));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &y));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &z));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[1], &x));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[2], &y));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[3], &z));
     t  = Math::Transform::Translation(x, y, z);
 
     double xs, ys, zs;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &xs));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[5], &ys));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[6], &zs));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[4], &xs));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[5], &ys));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[6], &zs));
     t *= Math::Transform::Scaling(xs, ys, zs);
 
     double yaw, pitch, roll;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[7], &yaw));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[8], &pitch));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[9], &roll));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[7], &yaw));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[8], &pitch));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[9], &roll));
     t *= Math::Transform::Rotation(yaw, pitch, roll);
 
     aOutput.mTransforms.push_back(t);
@@ -78,18 +79,18 @@ ParserResult CameraSymbol::ParseLine(const std::vector<std::string>& aParameters
     }
 
     uint32_t transformIdx;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[1], &transformIdx));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[1], &transformIdx));
     if(transformIdx > aOutput.mTransforms.size() || transformIdx < 1) 
         return kParseNonExistantReference;
     // Convert from 1 indexed
     transformIdx--;
 
     double fov;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &fov));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[2], &fov));
 
     uint32_t width, height;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &width));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[4], &height));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[3], &width));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[4], &height));
 
     aOutput.mCamera.Init(aOutput.mTransforms[transformIdx], fov, width, height);
 
@@ -107,11 +108,11 @@ ParserResult MaterialSymbol::ParseLine(const std::vector<std::string>& aParamete
     }
 
     double se, diffuse, specular, shininess, reflectivity;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[1], &se));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &diffuse));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &specular));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &shininess));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[5], &reflectivity));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[1], &se));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[2], &diffuse));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[3], &specular));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[4], &shininess));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[5], &reflectivity));
 
     aOutput.mMaterials.push_back(Material(se, diffuse, specular, shininess, reflectivity));
 
@@ -129,9 +130,9 @@ ParserResult VertexSymbol::ParseLine(const std::vector<std::string>& aParameters
     }
 
     double x, y, z;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[1], &x));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &y));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &z));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[1], &x));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[2], &y));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[3], &z));
 
     Math::Point p(x,y,z);
     aOutput.mVertices.push_back(Vertex(p));
@@ -150,10 +151,10 @@ ParserResult LightSymbol::ParseLine(const std::vector<std::string>& aParameters,
     }
 
     double intensity, x, y, z;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[1], &intensity));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &x));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &y));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &z));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[1], &intensity));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[2], &x));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[3], &y));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[4], &z));
 
     Math::Point p(x,y,z);
     aOutput.mLights.push_back(Light(intensity, p));
@@ -172,9 +173,9 @@ ParserResult ColourSymbol::ParseLine(const std::vector<std::string>& aParameters
     }
 
     double r, g, b;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[1], &r));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &g));
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &b));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[1], &r));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[2], &g));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[3], &b));
 
     aOutput.mColours.push_back(Colour(r, g, b));
 
@@ -192,26 +193,26 @@ ParserResult SphereSymbol::ParseLine(const std::vector<std::string>& aParameters
     }
 
     uint32_t mat, col, trans;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[1], &col));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[1], &col));
     if(col > aOutput.mColours.size() || col < 1)
         return kParseNonExistantReference;
     // Convert from 1 indexed
     Colour colour = aOutput.mColours[col - 1];
 
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &mat));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[2], &mat));
     if(mat > aOutput.mMaterials.size() || mat < 1)
         return kParseNonExistantReference;
     // Convert from 1 indexed
     Material material = aOutput.mMaterials[mat - 1];
 
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &trans));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[3], &trans));
     if(trans > aOutput.mTransforms.size() || trans < 1)
         return kParseNonExistantReference;
     // Convert from 1 indexed
     Math::Transform transform = aOutput.mTransforms[trans - 1];
 
     double radius;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &radius));
+    REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[4], &radius));
 
     aOutput.mObjects.push_back(std::make_shared<Sphere>(colour, material, transform, radius));
     return kParseSuccess;
@@ -231,7 +232,7 @@ ParserResult FaceSymbol::ParseLine(const std::vector<std::string>& aParameters, 
 
     for (int i = 0; i < 3; i++){
         double vertIdx;
-        REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[i+1], &vertIdx));
+        REQUIRE_PARSE_SUCCESS(Misc::GetDouble(aParameters[i+1], &vertIdx));
         if(vertIdx > aOutput.mVertices.size() || vertIdx < 1)
             return kParseNonExistantReference;
 
@@ -256,19 +257,19 @@ ParserResult ObjSymbol::ParseLine(const std::vector<std::string>& aParameters, S
     std::string filename = mDirectory + aParameters[1];
 
     uint32_t mat, col, trans;
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &col));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[2], &col));
     if(col > aOutput.mColours.size() || col < 1)
         return kParseNonExistantReference;
     // Convert from 1 indexed
     Colour colour = aOutput.mColours[col - 1];
 
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &mat));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[3], &mat));
     if(mat > aOutput.mMaterials.size() || mat < 1)
         return kParseNonExistantReference;
     // Convert from 1 indexed
     Material material = aOutput.mMaterials[mat - 1];
 
-    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[4], &trans));
+    REQUIRE_PARSE_SUCCESS(Misc::GetUnsigned(aParameters[4], &trans));
     if(trans > aOutput.mTransforms.size() || trans < 1)
         return kParseNonExistantReference;
     // Convert from 1 indexed

@@ -1,5 +1,6 @@
 // David Sami 2015
 
+#include "Misc.h"
 #include "Parser.h"
 #include "ParserSymbols.h"
 
@@ -21,7 +22,7 @@ ParserResult Parser::ParseFile(Scene& aOutput){
     int counter = 1;
     while(getline(fin, line)){
         std::stringstream linestream(line);
-        std::vector<std::string> pieces = SplitLine(linestream, ' ');
+        std::vector<std::string> pieces = Misc::SplitLine(linestream, ' ');
 
         ParserResult ret = kParseUnhandled;
 
@@ -56,65 +57,4 @@ ParserResult Parser::ParseFile(Scene& aOutput){
 
     return kParseSuccess;
 }
-
-std::vector<std::string> Parser::SplitLine(std::stringstream& aLine, char aDelim){
-    std::vector<std::string> out;
-
-    std::string piece;
-    while(getline(aLine, piece, aDelim)){
-        if(!piece.empty())
-            out.push_back(piece);
-    }
-
-    return out;
-}
-
-bool Symbol::GetInt(const std::string& aString, int* aOut){
-    bool result = true;
-    int out;
-
-    try{
-        out = stoi(aString);
-    } catch (std::exception e){
-        result = false;
-    }
-
-    if(result)
-        *aOut = out;
-
-    return result;
-}
-
-bool Symbol::GetUnsigned(const std::string& aString, uint32_t* aOut){
-    bool result = true;
-    uint32_t out;
-
-    try{
-        out = stoul(aString);
-    } catch (std::exception e){
-        result = false;
-    }
-
-    if(result)
-        *aOut = out;
-
-    return result;
-}
-
-bool Symbol::GetDouble(const std::string& aString, double* aOut){
-    bool result = true;
-    double out;
-
-    try{
-        out = stod(aString);
-    } catch (std::exception e){
-        result = false;
-    }
-
-    if(result)
-        *aOut = out;
-
-    return result;
-}
-
 

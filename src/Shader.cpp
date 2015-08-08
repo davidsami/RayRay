@@ -11,7 +11,7 @@ Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene){
 Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene, uint32_t aBounceNum){
     ObjectIntersection objectIntersect = IntersectObjects(aRay, aScene);
 
-    Colour ret = Colour(0,0,0);
+    Colour ret = mBackgroundColour;
 
     if(objectIntersect.mIntersects){
         std::vector<LightIntersection> hitLights = IntersectLights(objectIntersect.mPoint, objectIntersect.mNormal, aScene);

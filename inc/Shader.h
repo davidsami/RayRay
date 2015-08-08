@@ -41,6 +41,7 @@ struct LightIntersection : public Intersection {
 
 class Shader {
 public:
+    Shader(Colour aBackgroundColour): mBackgroundColour(aBackgroundColour) {}
     Colour CastRay(Math::Ray aRay, const Scene& aScene);
 protected:
     Colour CastRay(Math::Ray aRay, const Scene& aScene, uint32_t aBounceNum);
@@ -50,6 +51,8 @@ protected:
     // Intersection functions
     ObjectIntersection IntersectObjects(Math::Ray aRay, const Scene& aScene);
     std::vector<LightIntersection> IntersectLights(Math::Point aOrigin, Math::Normal aNormal, const Scene& aScene);
+
+    Colour mBackgroundColour;
 };
 
 #endif

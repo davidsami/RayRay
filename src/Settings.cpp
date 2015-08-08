@@ -1,5 +1,6 @@
 // David Sami 2015
 
+#include "Misc.h"
 #include "Settings.h"
 
 const std::string Settings::kAmbientIntensity = "ambient_intensity";
@@ -50,64 +51,65 @@ bool Settings::GetString(const std::string& aKey, std::string* aOut) const{
 
 bool Settings::GetInt(const std::string& aKey, int* aOut) const{
     bool result = true;
-    int out;
     std::string val;
 
     result = GetString(aKey, &val);
 
-    if(result){
-        try{
-            out = stoi(val);
-        } catch (std::exception e){
-            result = false;
-        }
-    }
-
     if(result)
-        *aOut = out;
+        result = Misc::GetInt(val, aOut);
 
     return result;
 }
 
 bool Settings::GetUnsigned(const std::string& aKey, uint32_t* aOut) const{
     bool result = true;
-    uint32_t out;
     std::string val;
 
     result = GetString(aKey, &val);
 
-    if(result){
-        try{
-            out = stoul(val);
-        } catch (std::exception e){
-            result = false;
-        }
-    }
-
     if(result)
-        *aOut = out;
+        result = Misc::GetUnsigned(val, aOut);
 
     return result;
 }
 
 bool Settings::GetDouble(const std::string& aKey, double* aOut) const{
     bool result = true;
-    double out;
+    std::string val;
+
+    result = GetString(aKey, &val);
+
+    if(result)
+        result = Misc::GetDouble(val, aOut);
+
+    return result;
+}
+
+bool Settings::GetColour(const std::string& aKey, Colour* aOut) const{
+    bool result = true;
     std::string val;
 
     result = GetString(aKey, &val);
 
     if(result){
-        try{
-            out = stod(val);
-        } catch (std::exception e){
+        std::stringstream str(val);
+        std::vector<std::string> split = Misc::SplitLine(str, ',');
+        if(split.size() != 3)
             result = false;
-        }
-    }
+        
+        double r, g, b;
+        if(result)
+            result = Misc::GetDouble(split[0], &r);
 
-    if(result)
-        *aOut = out;
+        if(result)
+            result = Misc::GetDouble(split[1], &g);
+
+        if(result)
+            result = Misc::GetDouble(split[2], &b);
+
+        if(result)
+            *aOut = Colour(r, g, b);
+    }
 
     return result;
 }
-
