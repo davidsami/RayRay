@@ -26,6 +26,6 @@ std::ostream &operator<<(std::ostream &os, const Math::Point &m) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Math::Ray &m) {
-    os << "O: " << m.o << " D: " << m.d;
+    os << "O: " << m.o << " D: " << m.d << " Dinv: " << m.dinv;
     return os;
 }

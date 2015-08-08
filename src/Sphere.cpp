@@ -6,9 +6,10 @@ Sphere::Sphere(Colour aColour, Material aMaterial, Math::Transform aTransform, d
     Shape(aColour, aMaterial, aTransform),
     mRadius(aRadius)
 {
+    OnTransformChange();
 }
 
-bool Sphere::Intersect(const Math::Ray& aRay, double* aIntersection){
+bool Sphere::CheckIntersect(const Math::Ray& aRay, double* aIntersection){
     // Bring the ray to the object's space
     Math::Ray r = mTransform.reverse(aRay);
 
@@ -42,7 +43,14 @@ bool Sphere::Intersect(const Math::Ray& aRay, double* aIntersection){
 }
 
 Math::Normal Sphere::GetNormal(const Math::Point& aPoint){
+    // When the point is in the world space, the vector created by the origin
+    // to the point is the normal at that point on the sphere
     return Math::Normal(mTransform.reverse(aPoint));
+}
+
+void Sphere::OnTransformChange(){
+    Math::Point center = mTransform(Math::Point(0,0,0));
+    mBox = BoundingBox(center, mRadius);
 }
 
 Math::Transform Sphere::TransformationFromPoint(const Math::Point& aCenter){

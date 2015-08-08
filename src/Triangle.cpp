@@ -6,23 +6,21 @@ Triangle::Triangle(Colour aColour, Material aMaterial, std::array<Vertex,3>& aVe
     Shape(aColour, aMaterial, Math::Transform()),
     mVertices(aVertices)
 {
-    CalculateEdgeVectors(mVertices);
-    CalculateNormal(mVertices);
+    OnTransformChange();
 }
 
 Triangle::Triangle(std::array<Vertex,3>& aVertices):
     Shape(),
     mVertices(aVertices)
 {
-    CalculateEdgeVectors(mVertices);
-    CalculateNormal(mVertices);
+    OnTransformChange();
 }
 
 Math::Normal Triangle::GetNormal(const Math::Point&){
     return mNormal;
 }
 
-bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
+bool Triangle::CheckIntersect(const Math::Ray& aRay, double* aIntersection){
     Math::Vector p = aRay.d.Cross(mEdge2);
     double det = p.Dot(mEdge1);
 
@@ -56,8 +54,13 @@ void Triangle::OnTransformChange(){
     mVertices[1] = mTransform(mVertices[1].p);
     mVertices[2] = mTransform(mVertices[2].p);
 
+    CalculateBoundingBox(mVertices);
     CalculateEdgeVectors(mVertices);
     CalculateNormal(mVertices);
+}
+
+void Triangle::CalculateBoundingBox(std::array<Vertex,3>& aVertices){
+    mBox = BoundingBox(aVertices);
 }
 
 void Triangle::CalculateNormal(std::array<Vertex,3>& aVertices){

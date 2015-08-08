@@ -25,7 +25,10 @@ namespace Math {
         Vector (Eigen::Vector3d& vin){
             d = vin;
         }
-        double operator()(int i){
+        double operator()(int i) const{
+            return d(i);
+        }
+        double& operator[](int i){
             return d(i);
         }
         Vector operator+(const Vector& rhs) const{
@@ -51,10 +54,21 @@ namespace Math {
             out = d.normalized();
             return Vector(out);
         }
+        Vector Inverse(){
+            Eigen::Vector3d out;
+            out << 1. / d(0),
+                   1. / d(1),
+                   1. / d(2);
+
+            return Vector(out);
+        }
     };
 
     struct Point : public Vector {
         Point(): Vector(){}
+        Point(const Vector& vec){
+            d = vec.d;
+        }
         Point(double x, double y, double z):Vector(x,y,z){}
         Point(Eigen::Vector3d& vin):Vector(vin){}
     };
@@ -68,15 +82,16 @@ namespace Math {
         Normal(Eigen::Vector3d& vin):Vector(vin){}
     };
 
-    struct Ray{
-        Ray(Point aO, Vector aD):o(aO), d(aD){}
-        Ray():o(Point(0,0,0)), d(Vector(0,0,0)){}
+    struct Ray {
+        Ray(Point aO, Vector aD):o(aO), d(aD), dinv(aD.Inverse()){}
+        Ray():o(0.,0.,0.), d(0.,0.,0.), dinv(0., 0., 0.){}
         Point GetPoint(double t){
             Eigen::Vector3d p = o.d + d.d*t;
             return Point(p);
         }
         Point o;
         Vector d;
+        Vector dinv;
     };
 
 
@@ -166,6 +181,7 @@ namespace Math {
             Ray o;
             o.o = (*this)(r.o);
             o.d = (*this)(r.d);
+            o.dinv = o.d.Inverse();
             return o;
         }
 
@@ -192,6 +208,7 @@ namespace Math {
             Ray o;
             o.o = this->reverse(r.o);
             o.d = this->reverse(r.d);
+            o.dinv = o.d.Inverse();
             return o;
         }
     };

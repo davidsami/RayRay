@@ -3,11 +3,13 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
+#include "BoundingBox.h"
+#include "Intersectable.h"
 #include "Material.h"
 #include "Math.h"
 #include "Colour.h"
 
-class Shape {
+class Shape: Intersectable {
 public:
     Shape(Colour aColour, Material aMaterial, Math::Transform aTransform): 
         mColour(aColour),
@@ -23,7 +25,20 @@ public:
     {
     }
 
-    virtual bool Intersect(const Math::Ray& aRay, double* aIntersection) = 0;
+    bool Intersect(const Math::Ray& aRay, double* aIntersection){
+        bool doesIntersect = false;
+
+        // Check the bounding box first, then call CheckIntersect from subclass
+        if(mBox.DoesIntersect(aRay)){
+            doesIntersect = CheckIntersect(aRay, aIntersection);
+        }
+
+        return doesIntersect;
+    }
+    bool DoesIntersect(const Math::Ray& aRay){
+        double temp;
+        return Intersect(aRay, &temp);
+    }
     virtual Math::Normal GetNormal(const Math::Point& aPoint) = 0;
     void SetColour(Colour aColour){
         mColour = aColour;
@@ -44,13 +59,15 @@ public:
         return mMaterial;
     }
 protected:
-    // Temporary. Single colour shapes
     Colour mColour;
     Material mMaterial;
     Math::Transform mTransform;
     virtual void OnColourChange() {}
     virtual void OnMaterialChange() {}
     virtual void OnTransformChange() {}
+
+    BoundingBox mBox;
+    virtual bool CheckIntersect(const Math::Ray& aRay, double* aIntersection) = 0;
 };
 
 #endif

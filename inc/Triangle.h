@@ -17,7 +17,7 @@ class Triangle: public Shape {
 public:
     Triangle(Colour aColour, Material aMaterial, std::array<Vertex,3>& aVertices);
     Triangle(std::array<Vertex,3>& aVertices);
-    virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
+    virtual bool CheckIntersect(const Math::Ray& aRay, double* aIntersection);
     virtual Math::Normal GetNormal(const Math::Point&);
 
 protected:
@@ -27,6 +27,8 @@ private:
     std::array<Vertex,3> mVertices;
 
     // Precompute
+    void CalculateBoundingBox(std::array<Vertex,3>& aVertices);
+
     void CalculateNormal(std::array<Vertex,3>& aVertices);
     Math::Normal mNormal;
 
