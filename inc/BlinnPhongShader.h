@@ -11,7 +11,7 @@ public:
     BlinnPhongShader(double aAmbient);
     BlinnPhongShader()=delete;
 protected:
-    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, Scene& aScene);
+    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, const Scene& aScene);
 private:
     // Global settings
     double mAmbientIntensity;

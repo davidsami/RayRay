@@ -7,8 +7,8 @@
 #include "Sphere.h"
 #include "Triangle.h"
 
-RayRay::RayRay(std::unique_ptr<Scene> aScene):
-    mScene(std::move(aScene)),
+RayRay::RayRay(const Scene& aScene):
+    mScene(std::make_shared<const Scene>(aScene)),
     mPixels(mScene->mCamera.GetY(), mScene->mCamera.GetX())
 {
 }

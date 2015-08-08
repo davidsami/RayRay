@@ -41,18 +41,18 @@ struct LightIntersection : public Intersection {
 
 class Shader {
 public:
-    Colour ShadePixel(uint32_t x, uint32_t y, Scene& aScene);
+    Colour ShadePixel(uint32_t x, uint32_t y, const Scene& aScene);
 
 private:
-    Colour CastRay(Math::Ray aRay, Scene& aScene);
+    Colour CastRay(Math::Ray aRay, const Scene& aScene);
 
 protected:
     // Implementation specific
-    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, Scene& aScene)=0;
+    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, const Scene& aScene)=0;
 
     // Intersection functions
-    ObjectIntersection IntersectObjects(Math::Ray aRay, Scene& aScene);
-    std::vector<LightIntersection> IntersectLights(Math::Point aOrigin, Math::Normal aNormal, Scene& aScene);
+    ObjectIntersection IntersectObjects(Math::Ray aRay, const Scene& aScene);
+    std::vector<LightIntersection> IntersectLights(Math::Point aOrigin, Math::Normal aNormal, const Scene& aScene);
 };
 
 #endif

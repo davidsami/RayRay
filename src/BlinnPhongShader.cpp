@@ -15,7 +15,7 @@ std::unique_ptr<BlinnPhongShader> BlinnPhongShader::CreateBlinnPhongShader(const
     return out;
 }
 
-Colour BlinnPhongShader::CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, Scene& aScene){
+Colour BlinnPhongShader::CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, const Scene& aScene){
     Colour ret;
 
     Math::Ray ray = aObject.mRay;

@@ -9,9 +9,9 @@
 class Light {
 public:
     Light(const double aIntensity, const Math::Point aCenter):mIntensity(aIntensity),mCenter(aCenter){}
-    Math::Ray CreateRay(Math::Point aOrigin);
-    double GetAttenuation(Math::Point aOrigin);
-    double GetIntensity();
+    Math::Ray CreateRay(Math::Point aOrigin) const;
+    double GetAttenuation(Math::Point aOrigin) const;
+    double GetIntensity() const;
 private:
     double mIntensity;
     Math::Point mCenter;

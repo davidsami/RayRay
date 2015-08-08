@@ -7,15 +7,15 @@
 #include "OBJParser.h"
 
 int main(int argc, char* argv[]){
-    std::unique_ptr<Scene> scene = std::make_unique<Scene>();
+    Scene scene;
 
     if(argc >= 2) {
         Parser parse = Parser(std::string(argv[1]));
         ParserResult result;
-        result = parse.ParseRayFile(*scene);
+        result = parse.ParseRayFile(scene);
 
         if(result == kParseSuccess){
-            RayRay ray(std::move(scene));
+            RayRay ray(scene);
             ray.Run();
         } else {
             std::cout << "Parse Error" << std::endl;

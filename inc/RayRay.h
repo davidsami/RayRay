@@ -15,7 +15,7 @@
 
 class RayRay {
 public:
-    RayRay(std::unique_ptr<Scene> aScene);
+    RayRay(const Scene& aScene);
     void Run();
 private:
     void Init();
@@ -24,7 +24,7 @@ private:
 
     void Output();
 
-    std::unique_ptr<Scene> mScene;
+    std::shared_ptr<const Scene> mScene;
 
     PixelBuffer mPixels;
 

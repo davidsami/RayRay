@@ -4,13 +4,13 @@
 #include <limits>
 #include "Shader.h"
 
-Colour Shader::ShadePixel(uint32_t x, uint32_t y, Scene& aScene){
+Colour Shader::ShadePixel(uint32_t x, uint32_t y, const Scene& aScene){
     // Generate one ray for now
     Math::Ray ray = aScene.mCamera.GenerateRay(x, y);
     return CastRay(ray, aScene);
 }
 
-Colour Shader::CastRay(Math::Ray aRay, Scene& aScene){
+Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene){
     ObjectIntersection objectIntersect = IntersectObjects(aRay, aScene);
 
     Colour ret = Colour(0,0,0);
@@ -24,9 +24,9 @@ Colour Shader::CastRay(Math::Ray aRay, Scene& aScene){
     return ret;
 }
 
-ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, Scene& aScene){
+ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, const Scene& aScene){
     double minIntersection = std::numeric_limits<double>::infinity();
-    std::vector<std::shared_ptr<Shape>>::iterator intersectionShape;
+    std::shared_ptr<Shape> intersectionShape;
 
     for(auto it = aScene.mObjects.begin(); it != aScene.mObjects.end(); it++){
         double intersection;
@@ -37,7 +37,7 @@ ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, Scene& aScene){
                intersection > 0.0001)
         {
             minIntersection = intersection;
-            intersectionShape = it;
+            intersectionShape = *it;
         }
     }
 
@@ -48,14 +48,14 @@ ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, Scene& aScene){
         ret.mIntersects = true;
         ret.mRay = aRay;
         ret.mPoint = aRay.GetPoint(minIntersection);
-        ret.mColour = (*intersectionShape)->GetColour();
-        ret.mNormal = (*intersectionShape)->GetNormal(ret.mPoint);
-        ret.mMaterial = (*intersectionShape)->GetMaterial();
+        ret.mColour = intersectionShape->GetColour();
+        ret.mNormal = intersectionShape->GetNormal(ret.mPoint);
+        ret.mMaterial = intersectionShape->GetMaterial();
     }
     return ret;
 }
 
-std::vector<LightIntersection> Shader::IntersectLights(Math::Point aOrigin, Math::Normal aNormal, Scene& aScene){
+std::vector<LightIntersection> Shader::IntersectLights(Math::Point aOrigin, Math::Normal aNormal, const Scene& aScene){
     std::vector<LightIntersection> intersections;
 
     for(auto it = aScene.mLights.begin(); it != aScene.mLights.end(); it++){
