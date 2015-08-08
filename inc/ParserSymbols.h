@@ -24,6 +24,14 @@ DEFINE_PARSER_SYMBOL(LightSymbol);
 DEFINE_PARSER_SYMBOL(ColourSymbol);
 DEFINE_PARSER_SYMBOL(SphereSymbol);
 DEFINE_PARSER_SYMBOL(FaceSymbol);
-DEFINE_PARSER_SYMBOL(ObjSymbol);
+
+class ObjSymbol : public Symbol {
+public:
+    ObjSymbol(std::string aDirectory):mDirectory(aDirectory) {}
+    virtual bool CheckSymbol(const std::vector<std::string>& aParameters);
+    virtual ParserResult ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput);
+private:
+    std::string mDirectory;
+};
 
 #endif

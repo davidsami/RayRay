@@ -11,6 +11,8 @@
 #include "Shape.h"
 #include "Triangle.h"
 
+struct ParserOBJPrimitive;
+
 struct Scene {
     // Objects used by all shapes
     std::vector<std::shared_ptr<Math::Transform>> mTransforms;
@@ -21,12 +23,14 @@ struct Scene {
     std::vector<std::shared_ptr<Vertex>> mVertices;
 
     // Scene
-    std::vector<std::unique_ptr<Shape>> mObjects;
+    std::vector<std::shared_ptr<Shape>> mObjects;
     std::vector<std::unique_ptr<Light>> mLights;
 
     // Globals
     Camera mCamera;
     Settings mSettings;
+
+    void MergeOBJ(const ParserOBJPrimitive& aPrimitive);
 };
 
 #endif

@@ -108,10 +108,10 @@ ParserResult OBJParser::ParseFace(std::stringstream& aStream, ParserOBJPrimitive
     if(indices.size() == 3){
         std::array<std::shared_ptr<Vertex>,3> vertices;
         for(int i = 0; i < 3; i++){
-            if(indices[i] >= aResult.mVertices.size()){
+            if(indices[i] > aResult.mVertices.size()){
                 return kParseMalformedLine;
             } else {
-                vertices[i] = aResult.mVertices[indices[i]];
+                vertices[i] = aResult.mVertices[indices[i] - 1];
             }
         }
         std::unique_ptr<Triangle> t(new Triangle(vertices));

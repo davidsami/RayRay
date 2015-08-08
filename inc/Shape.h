@@ -31,6 +31,9 @@ public:
     void SetMaterial(std::shared_ptr<Material> aMaterial){
         mMaterial = aMaterial;
     }
+    void SetTransform(std::shared_ptr<Math::Transform> aTransform){
+        mTransform = aTransform;
+    }
     Colour GetColour(){
         return *mColour;
     }

@@ -26,7 +26,7 @@ Colour Shader::CastRay(Math::Ray aRay, Scene& aScene){
 
 ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, Scene& aScene){
     double minIntersection = std::numeric_limits<double>::infinity();
-    std::vector<std::unique_ptr<Shape>>::iterator intersectionShape;
+    std::vector<std::shared_ptr<Shape>>::iterator intersectionShape;
 
     for(auto it = aScene.mObjects.begin(); it != aScene.mObjects.end(); it++){
         double intersection;

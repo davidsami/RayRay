@@ -21,8 +21,13 @@ Math::Normal Triangle::GetNormal(const Math::Point&){
 }
 
 bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
-    Math::Vector e1 = mVertices[1]->p - mVertices[0]->p;
-    Math::Vector e2 = mVertices[2]->p - mVertices[0]->p;
+    Math::Point a, b, c;
+    a = (*mTransform)(mVertices[0]->p);
+    b = (*mTransform)(mVertices[1]->p);
+    c = (*mTransform)(mVertices[2]->p);
+
+    Math::Vector e1 = b - a;
+    Math::Vector e2 = c - a;
     Math::Vector p = aRay.d.Cross(e2);
     double det = p.Dot(e1);
 
@@ -30,7 +35,7 @@ bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
         return false;
 
     double invDet = 1 / det;
-    Math::Vector T = aRay.o - mVertices[0]->p;
+    Math::Vector T = aRay.o - a;
     double u = T.Dot(p) * invDet;
 
     if(u < 0 || u > 1)

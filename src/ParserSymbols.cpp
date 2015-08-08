@@ -1,6 +1,7 @@
 // David Sami 2015
 
 #include <iostream>
+#include "OBJParser.h"
 #include "ParserSymbols.h"
 #include "Sphere.h"
 
@@ -206,7 +207,7 @@ ParserResult SphereSymbol::ParseLine(const std::vector<std::string>& aParameters
     double radius;
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &radius));
 
-    aOutput.mObjects.push_back(std::make_unique<Sphere>(colour, material, transform, radius));
+    aOutput.mObjects.push_back(std::make_shared<Sphere>(colour, material, transform, radius));
     return kParseSuccess;
 }
 
@@ -231,7 +232,7 @@ ParserResult FaceSymbol::ParseLine(const std::vector<std::string>& aParameters, 
         vertices[i] = aOutput.mVertices[vertIdx];
     }
 
-    aOutput.mObjects.push_back(std::make_unique<Triangle>(vertices));
+    aOutput.mObjects.push_back(std::make_shared<Triangle>(vertices));
 
     return kParseSuccess;
 }
@@ -242,6 +243,40 @@ bool ObjSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult ObjSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    return kParseSuccess;
+    if(aParameters.size() != 5){
+        return kParseMalformedLine;
+    }
+    std::cout << mDirectory << std::endl;
+    std::string filename = mDirectory + aParameters[1];
+
+    uint32_t mat, col, trans;
+    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &col));
+    if(col >= aOutput.mColours.size())
+        return kParseNonExistantReference;
+    std::shared_ptr<Colour> colour = aOutput.mColours[col];
+
+    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &mat));
+    if(mat >= aOutput.mMaterials.size())
+        return kParseNonExistantReference;
+    std::shared_ptr<Material> material = aOutput.mMaterials[mat];
+
+    REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[4], &trans));
+    if(trans >= aOutput.mTransforms.size())
+        return kParseNonExistantReference;
+    std::shared_ptr<Math::Transform> transform = aOutput.mTransforms[trans];
+
+    ParserOBJPrimitive primitive;
+    OBJParser obj;
+    ParserResult result;
+    result = obj.ParseOBJFile(filename, primitive);
+
+    if(result == kParseSuccess){
+        // Apply the colour material and transform to the obj
+        primitive.Apply(colour, material, transform);
+
+        // Merge the obj into the output
+        aOutput.MergeOBJ(primitive);
+    }
+    return result;
 }
 

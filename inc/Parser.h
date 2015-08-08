@@ -13,7 +13,7 @@
 
 enum ParserResult{
     // Success
-    kParseSuccess,
+    kParseSuccess = 1,
 
     // Error with opening file
     kParseFileError,
@@ -52,11 +52,13 @@ protected:
 
 class Parser {
 public:
-    Parser();
-    ParserResult ParseRayFile(const std::string& aFilename, Scene& aOutput);
+    Parser(const std::string& aFilename);
+    ParserResult ParseRayFile(Scene& aOutput);
     static std::vector<std::string> SplitLine(std::stringstream& aLine, char aDelim);
 private:
     std::vector<std::unique_ptr<Symbol>> mSymbolParsers;
+    std::string mFilename;
+    std::string mDirectory;
 };
 
 #endif

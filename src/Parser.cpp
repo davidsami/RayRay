@@ -3,7 +3,15 @@
 #include "Parser.h"
 #include "ParserSymbols.h"
 
-Parser::Parser(){
+Parser::Parser(const std::string& aFilename):
+    mFilename(aFilename)
+{
+    size_t slashDirPos = mFilename.find_last_of('/');
+    if(slashDirPos == std::string::npos)
+        mDirectory = "";
+    else
+        mDirectory = mFilename.substr(0, slashDirPos+1);
+
     mSymbolParsers.push_back(std::make_unique<CommentSymbol>());
     mSymbolParsers.push_back(std::make_unique<SettingSymbol>());
     mSymbolParsers.push_back(std::make_unique<TransformSymbol>());
@@ -14,13 +22,13 @@ Parser::Parser(){
     mSymbolParsers.push_back(std::make_unique<ColourSymbol>());
     mSymbolParsers.push_back(std::make_unique<SphereSymbol>());
     mSymbolParsers.push_back(std::make_unique<FaceSymbol>());
-    mSymbolParsers.push_back(std::make_unique<ObjSymbol>());
+    mSymbolParsers.push_back(std::make_unique<ObjSymbol>(mDirectory));
 }
 
-ParserResult Parser::ParseRayFile(const std::string& aFilename, Scene& aOutput){
-    std::fstream fin(aFilename, std::ios_base::in);
+ParserResult Parser::ParseRayFile(Scene& aOutput){
+    std::fstream fin(mFilename, std::ios_base::in);
 
-    std::cout << "Opening Ray file: " << aFilename << std::endl;
+    std::cout << "Opening Ray file: " << mFilename << std::endl;
     if(!fin.is_open())
         return kParseFileError;
 
@@ -47,6 +55,7 @@ ParserResult Parser::ParseRayFile(const std::string& aFilename, Scene& aOutput){
 
         if(ret != ParserResult::kParseSuccess && ret != ParserResult::kParseIgnore){
             std::cout << "Error on line " << counter << ": " << line << std::endl;
+            std::cout << "Error: " << ret << std::endl;
             return ret;
         }
         counter++;

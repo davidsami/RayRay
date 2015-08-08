@@ -30,6 +30,7 @@ void RayRay::Loop(){
         for(uint32_t x = 0; x < mScene->mCamera.GetX(); x++){
             mPixels.Get(x,y) = mShader->ShadePixel(x, y, *mScene);
         }
+        std::cout << "(" << y << ")" << std::endl;
     }
 }
 
