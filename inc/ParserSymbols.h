@@ -34,4 +34,8 @@ private:
     std::string mDirectory;
 };
 
+// The catchall symbol for OBJ
+// Don't want to implement all OBJ features yet
+DEFINE_PARSER_SYMBOL(MiscSymbol);
+
 #endif

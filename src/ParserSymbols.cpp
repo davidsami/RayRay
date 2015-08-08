@@ -79,8 +79,10 @@ ParserResult CameraSymbol::ParseLine(const std::vector<std::string>& aParameters
 
     uint32_t transformIdx;
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[1], &transformIdx));
-    if(transformIdx >= aOutput.mTransforms.size())
+    if(transformIdx > aOutput.mTransforms.size() || transformIdx < 1) 
         return kParseNonExistantReference;
+    // Convert from 1 indexed
+    transformIdx--;
 
     double fov;
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &fov));
@@ -190,19 +192,22 @@ ParserResult SphereSymbol::ParseLine(const std::vector<std::string>& aParameters
 
     uint32_t mat, col, trans;
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[1], &col));
-    if(col >= aOutput.mColours.size())
+    if(col > aOutput.mColours.size() || col < 1)
         return kParseNonExistantReference;
-    Colour colour = aOutput.mColours[col];
+    // Convert from 1 indexed
+    Colour colour = aOutput.mColours[col - 1];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &mat));
-    if(mat >= aOutput.mMaterials.size())
+    if(mat > aOutput.mMaterials.size() || mat < 1)
         return kParseNonExistantReference;
-    Material material = aOutput.mMaterials[mat];
+    // Convert from 1 indexed
+    Material material = aOutput.mMaterials[mat - 1];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &trans));
-    if(trans >= aOutput.mTransforms.size())
+    if(trans > aOutput.mTransforms.size() || trans < 1)
         return kParseNonExistantReference;
-    Math::Transform transform = aOutput.mTransforms[trans];
+    // Convert from 1 indexed
+    Math::Transform transform = aOutput.mTransforms[trans - 1];
 
     double radius;
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &radius));
@@ -226,10 +231,11 @@ ParserResult FaceSymbol::ParseLine(const std::vector<std::string>& aParameters, 
     for (int i = 0; i < 3; i++){
         double vertIdx;
         REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[i+1], &vertIdx));
-        if(vertIdx >= aOutput.mVertices.size())
+        if(vertIdx > aOutput.mVertices.size() || vertIdx < 1)
             return kParseNonExistantReference;
 
-        vertices[i] = aOutput.mVertices[vertIdx];
+        // OBJ format is 1 indexed
+        vertices[i] = aOutput.mVertices[vertIdx - 1];
     }
 
     aOutput.mObjects.push_back(std::make_shared<Triangle>(vertices));
@@ -251,32 +257,44 @@ ParserResult ObjSymbol::ParseLine(const std::vector<std::string>& aParameters, S
 
     uint32_t mat, col, trans;
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &col));
-    if(col >= aOutput.mColours.size())
+    if(col > aOutput.mColours.size() || col < 1)
         return kParseNonExistantReference;
-    Colour colour = aOutput.mColours[col];
+    // Convert from 1 indexed
+    Colour colour = aOutput.mColours[col - 1];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &mat));
-    if(mat >= aOutput.mMaterials.size())
+    if(mat > aOutput.mMaterials.size() || mat < 1)
         return kParseNonExistantReference;
-    Material material = aOutput.mMaterials[mat];
+    // Convert from 1 indexed
+    Material material = aOutput.mMaterials[mat - 1];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[4], &trans));
-    if(trans >= aOutput.mTransforms.size())
+    if(trans > aOutput.mTransforms.size() || trans < 1)
         return kParseNonExistantReference;
-    Math::Transform transform = aOutput.mTransforms[trans];
+    // Convert from 1 indexed
+    Math::Transform transform = aOutput.mTransforms[trans - 1];
 
-    ParserOBJPrimitive primitive;
-    OBJParser obj;
+    Scene primitive;
+
+    OBJParser obj(filename);
     ParserResult result;
-    result = obj.ParseOBJFile(filename, primitive);
+    result = obj.ParseFile(primitive);
 
     if(result == kParseSuccess){
         // Apply the colour material and transform to the obj
         primitive.Apply(colour, material, transform);
 
         // Merge the obj into the output
-        aOutput.MergeOBJ(primitive);
+        aOutput.Merge(primitive);
     }
     return result;
+}
+
+bool MiscSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
+    return true;
+}
+
+ParserResult MiscSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
+    return kParseSuccess;
 }
 

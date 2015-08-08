@@ -30,7 +30,8 @@ struct Scene {
     Camera mCamera;
     Settings mSettings;
 
-    void MergeOBJ(const ParserOBJPrimitive& aPrimitive);
+    void Merge(const Scene& aPrimitive);
+    void Apply(Colour aColour, Material aMaterial, Math::Transform aTransform);
 };
 
 #endif

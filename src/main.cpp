@@ -4,15 +4,15 @@
 #include "RayRay.h"
 #include "Settings.h"
 
-#include "OBJParser.h"
+#include "RayParser.h"
 
 int main(int argc, char* argv[]){
     Scene scene;
 
     if(argc >= 2) {
-        Parser parse = Parser(std::string(argv[1]));
+        RayParser parse = RayParser(std::string(argv[1]));
         ParserResult result;
-        result = parse.ParseRayFile(scene);
+        result = parse.ParseFile(scene);
 
         if(result == kParseSuccess){
             RayRay ray(scene);

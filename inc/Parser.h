@@ -53,12 +53,11 @@ protected:
 class Parser {
 public:
     Parser(const std::string& aFilename);
-    ParserResult ParseRayFile(Scene& aOutput);
+    ParserResult ParseFile(Scene& aOutput);
     static std::vector<std::string> SplitLine(std::stringstream& aLine, char aDelim);
-private:
+protected:
     std::vector<std::unique_ptr<Symbol>> mSymbolParsers;
     std::string mFilename;
-    std::string mDirectory;
 };
 
 #endif

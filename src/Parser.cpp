@@ -6,29 +6,12 @@
 Parser::Parser(const std::string& aFilename):
     mFilename(aFilename)
 {
-    size_t slashDirPos = mFilename.find_last_of('/');
-    if(slashDirPos == std::string::npos)
-        mDirectory = "";
-    else
-        mDirectory = mFilename.substr(0, slashDirPos+1);
-
-    mSymbolParsers.push_back(std::make_unique<CommentSymbol>());
-    mSymbolParsers.push_back(std::make_unique<SettingSymbol>());
-    mSymbolParsers.push_back(std::make_unique<TransformSymbol>());
-    mSymbolParsers.push_back(std::make_unique<CameraSymbol>());
-    mSymbolParsers.push_back(std::make_unique<MaterialSymbol>());
-    mSymbolParsers.push_back(std::make_unique<VertexSymbol>());
-    mSymbolParsers.push_back(std::make_unique<LightSymbol>());
-    mSymbolParsers.push_back(std::make_unique<ColourSymbol>());
-    mSymbolParsers.push_back(std::make_unique<SphereSymbol>());
-    mSymbolParsers.push_back(std::make_unique<FaceSymbol>());
-    mSymbolParsers.push_back(std::make_unique<ObjSymbol>(mDirectory));
 }
 
-ParserResult Parser::ParseRayFile(Scene& aOutput){
+ParserResult Parser::ParseFile(Scene& aOutput){
     std::fstream fin(mFilename, std::ios_base::in);
 
-    std::cout << "Opening Ray file: " << mFilename << std::endl;
+    std::cout << "Opening file: " << mFilename << std::endl;
     if(!fin.is_open())
         return kParseFileError;
 
@@ -61,12 +44,14 @@ ParserResult Parser::ParseRayFile(Scene& aOutput){
         counter++;
     }
 
-    std::cout << "Transforms: " << aOutput.mTransforms.size() << std::endl;
-    std::cout << "Materials: " << aOutput.mMaterials.size() << std::endl;
-    std::cout << "Vertices: " << aOutput.mVertices.size() << std::endl;
-    std::cout << "Colours: " << aOutput.mColours.size() << std::endl;
-    std::cout << "Shapes: " << aOutput.mObjects.size() << std::endl;
-    std::cout << "Lights: " << aOutput.mLights.size() << std::endl;
+    std::cout << "Results:" << std::endl;
+    std::cout << "    Transforms: " << aOutput.mTransforms.size() << std::endl;
+    std::cout << "    Materials: " << aOutput.mMaterials.size() << std::endl;
+    std::cout << "    Vertices: " << aOutput.mVertices.size() << std::endl;
+    std::cout << "    Colours: " << aOutput.mColours.size() << std::endl;
+    std::cout << "    Shapes: " << aOutput.mObjects.size() << std::endl;
+    std::cout << "    Lights: " << aOutput.mLights.size() << std::endl;
+
     return kParseSuccess;
 }
 
