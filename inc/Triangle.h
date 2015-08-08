@@ -25,8 +25,14 @@ protected:
 
 private:
     std::array<Vertex,3> mVertices;
-    static Math::Normal NormalFromPoints(std::array<Vertex,3>& aVertices);
+
+    // Precompute
+    void CalculateNormal(std::array<Vertex,3>& aVertices);
     Math::Normal mNormal;
+
+    void CalculateEdgeVectors(std::array<Vertex,3>& aVertices);
+    Math::Vector mEdge1;
+    Math::Vector mEdge2;
 };
 
 #endif

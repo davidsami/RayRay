@@ -4,16 +4,18 @@
 
 Triangle::Triangle(Colour aColour, Material aMaterial, std::array<Vertex,3>& aVertices):
     Shape(aColour, aMaterial, Math::Transform()),
-    mVertices(aVertices),
-    mNormal(Triangle::NormalFromPoints(aVertices))
+    mVertices(aVertices)
 {
+    CalculateEdgeVectors(mVertices);
+    CalculateNormal(mVertices);
 }
 
 Triangle::Triangle(std::array<Vertex,3>& aVertices):
     Shape(),
-    mVertices(aVertices),
-    mNormal(Triangle::NormalFromPoints(aVertices))
+    mVertices(aVertices)
 {
+    CalculateEdgeVectors(mVertices);
+    CalculateNormal(mVertices);
 }
 
 Math::Normal Triangle::GetNormal(const Math::Point&){
@@ -21,10 +23,8 @@ Math::Normal Triangle::GetNormal(const Math::Point&){
 }
 
 bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
-    Math::Vector e1 = mVertices[1].p - mVertices[0].p;
-    Math::Vector e2 = mVertices[2].p - mVertices[0].p;
-    Math::Vector p = aRay.d.Cross(e2);
-    double det = p.Dot(e1);
+    Math::Vector p = aRay.d.Cross(mEdge2);
+    double det = p.Dot(mEdge1);
 
     if(det == 0.)
         return false;
@@ -36,13 +36,13 @@ bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
     if(u < 0 || u > 1)
         return false;
 
-    Math::Vector q = T.Cross(e1);
+    Math::Vector q = T.Cross(mEdge1);
     double v = aRay.d.Dot(q) * invDet;
 
     if(v < 0 || (u + v) > 1)
         return false;
 
-    double t = e2.Dot(q) * invDet;
+    double t = mEdge2.Dot(q) * invDet;
 
     if(t > 0){
         *aIntersection = t;
@@ -55,11 +55,16 @@ void Triangle::OnTransformChange(){
     mVertices[0] = mTransform(mVertices[0].p);
     mVertices[1] = mTransform(mVertices[1].p);
     mVertices[2] = mTransform(mVertices[2].p);
-    //mNormal = mTransform(mNormal);
+
+    CalculateEdgeVectors(mVertices);
+    CalculateNormal(mVertices);
 }
 
-Math::Normal Triangle::NormalFromPoints(std::array<Vertex,3>& aVertices){
-    Math::Vector e1 = aVertices[1].p - aVertices[0].p;
-    Math::Vector e2 = aVertices[2].p - aVertices[0].p;
-    return Math::Normal(e1.Cross(e2));
+void Triangle::CalculateNormal(std::array<Vertex,3>& aVertices){
+    mNormal = Math::Normal(mEdge1.Cross(mEdge2));
+}
+
+void Triangle::CalculateEdgeVectors(std::array<Vertex,3>& aVertices){
+    mEdge1 = aVertices[1].p - aVertices[0].p;
+    mEdge2 = aVertices[2].p - aVertices[0].p;
 }
