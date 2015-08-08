@@ -9,14 +9,14 @@
 #define CAMERA_FAR_PLANE (1000.)
 
 Camera::Camera():
-    mCameraToWorld(std::make_shared<Math::Transform>(Math::Transform::Identity())),
+    mCameraToWorld(Math::Transform::Identity()),
     mScreenToCamera(PerspectiveTransform(CAMERA_DEFAULT_FOV, CAMERA_CLOSE_PLANE, CAMERA_FAR_PLANE, CAMERA_DEFAULT_X, CAMERA_DEFAULT_Y)),
     mX(CAMERA_DEFAULT_X),
     mY(CAMERA_DEFAULT_Y)
 {
 }
 
-void Camera::Init(std::shared_ptr<Math::Transform>& aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim)
+void Camera::Init(Math::Transform aCameraToWorld, double aFov, uint32_t xDim, uint32_t yDim)
 {
     mCameraToWorld = aCameraToWorld;
     mScreenToCamera = PerspectiveTransform(aFov, CAMERA_CLOSE_PLANE, CAMERA_FAR_PLANE, xDim, yDim);
@@ -55,5 +55,5 @@ Math::Ray Camera::GenerateRay(double x, double y) const{
 
     Math::Ray ray(Math::Point(0,0,0), Math::Vector(cameraPoint));
 
-    return (*mCameraToWorld)(ray);
+    return mCameraToWorld(ray);
 }

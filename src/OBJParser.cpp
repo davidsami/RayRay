@@ -83,8 +83,7 @@ ParserResult OBJParser::ParseVertex(std::stringstream& aStream, ParserOBJPrimiti
 
     if(coordinates.size() == 3){
         Math::Point p(coordinates[0], coordinates[1], coordinates[2]);
-        std::shared_ptr<Vertex> v(new Vertex(p));
-        aResult.mVertices.push_back(v);
+        aResult.mVertices.push_back(Vertex(p));
         return kParseSuccess;
     } else {
         return kParseMalformedLine;
@@ -106,7 +105,7 @@ ParserResult OBJParser::ParseFace(std::stringstream& aStream, ParserOBJPrimitive
     }
 
     if(indices.size() == 3){
-        std::array<std::shared_ptr<Vertex>,3> vertices;
+        std::array<Vertex,3> vertices;
         for(int i = 0; i < 3; i++){
             if(indices[i] > aResult.mVertices.size()){
                 return kParseMalformedLine;
@@ -114,8 +113,8 @@ ParserResult OBJParser::ParseFace(std::stringstream& aStream, ParserOBJPrimitive
                 vertices[i] = aResult.mVertices[indices[i] - 1];
             }
         }
-        std::unique_ptr<Triangle> t(new Triangle(vertices));
-        aResult.mObjects.push_back(std::move(t));
+        std::shared_ptr<Triangle> t(new Triangle(vertices));
+        aResult.mObjects.push_back(t);
         return kParseSuccess;
     } else {
         return kParseMalformedLine;

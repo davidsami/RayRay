@@ -2,14 +2,14 @@
 
 #include <Triangle.h>
 
-Triangle::Triangle(std::shared_ptr<Colour> aColour, std::shared_ptr<Material> aMaterial, std::array<std::shared_ptr<Vertex>,3> aVertices):
-    Shape(aColour, aMaterial, std::make_shared<Math::Transform>()),
+Triangle::Triangle(Colour aColour, Material aMaterial, std::array<Vertex,3>& aVertices):
+    Shape(aColour, aMaterial, Math::Transform()),
     mVertices(aVertices),
     mNormal(Triangle::NormalFromPoints(aVertices))
 {
 }
 
-Triangle::Triangle(std::array<std::shared_ptr<Vertex>,3> aVertices):
+Triangle::Triangle(std::array<Vertex,3>& aVertices):
     Shape(),
     mVertices(aVertices),
     mNormal(Triangle::NormalFromPoints(aVertices))
@@ -22,9 +22,9 @@ Math::Normal Triangle::GetNormal(const Math::Point&){
 
 bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
     Math::Point a, b, c;
-    a = (*mTransform)(mVertices[0]->p);
-    b = (*mTransform)(mVertices[1]->p);
-    c = (*mTransform)(mVertices[2]->p);
+    a = mTransform(mVertices[0].p);
+    b = mTransform(mVertices[1].p);
+    c = mTransform(mVertices[2].p);
 
     Math::Vector e1 = b - a;
     Math::Vector e2 = c - a;
@@ -56,8 +56,8 @@ bool Triangle::Intersect(const Math::Ray& aRay, double* aIntersection){
     return false;
 }
 
-Math::Normal Triangle::NormalFromPoints(std::array<std::shared_ptr<Vertex>,3> aVertices){
-    Math::Vector e1 = aVertices[1]->p - aVertices[0]->p;
-    Math::Vector e2 = aVertices[2]->p - aVertices[0]->p;
+Math::Normal Triangle::NormalFromPoints(std::array<Vertex,3>& aVertices){
+    Math::Vector e1 = aVertices[1].p - aVertices[0].p;
+    Math::Vector e2 = aVertices[2].p - aVertices[0].p;
     return Math::Normal(e1.Cross(e2));
 }

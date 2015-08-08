@@ -63,7 +63,7 @@ ParserResult TransformSymbol::ParseLine(const std::vector<std::string>& aParamet
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[9], &roll));
     t *= Math::Transform::Rotation(yaw, pitch, roll);
 
-    aOutput.mTransforms.push_back(std::make_shared<Math::Transform>(t));
+    aOutput.mTransforms.push_back(t);
     return kParseSuccess;
 }
 
@@ -110,7 +110,7 @@ ParserResult MaterialSymbol::ParseLine(const std::vector<std::string>& aParamete
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &specular));
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &shininess));
 
-    aOutput.mMaterials.push_back(std::make_shared<Material>(se, diffuse, specular, shininess));
+    aOutput.mMaterials.push_back(Material(se, diffuse, specular, shininess));
 
     return kParseSuccess;
 }
@@ -131,7 +131,7 @@ ParserResult VertexSymbol::ParseLine(const std::vector<std::string>& aParameters
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &z));
 
     Math::Point p(x,y,z);
-    aOutput.mVertices.push_back(std::make_shared<Vertex>(p));
+    aOutput.mVertices.push_back(Vertex(p));
 
     return kParseSuccess;
 }
@@ -153,7 +153,7 @@ ParserResult LightSymbol::ParseLine(const std::vector<std::string>& aParameters,
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &z));
 
     Math::Point p(x,y,z);
-    aOutput.mLights.push_back(std::make_unique<Light>(intensity, p));
+    aOutput.mLights.push_back(Light(intensity, p));
 
     return kParseSuccess;
 }
@@ -173,7 +173,7 @@ ParserResult ColourSymbol::ParseLine(const std::vector<std::string>& aParameters
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &g));
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &b));
 
-    aOutput.mColours.push_back(std::make_shared<Colour>(r, g, b));
+    aOutput.mColours.push_back(Colour(r, g, b));
 
     return kParseSuccess;
 }
@@ -192,17 +192,17 @@ ParserResult SphereSymbol::ParseLine(const std::vector<std::string>& aParameters
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[1], &col));
     if(col >= aOutput.mColours.size())
         return kParseNonExistantReference;
-    std::shared_ptr<Colour> colour = aOutput.mColours[col];
+    Colour colour = aOutput.mColours[col];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &mat));
     if(mat >= aOutput.mMaterials.size())
         return kParseNonExistantReference;
-    std::shared_ptr<Material> material = aOutput.mMaterials[mat];
+    Material material = aOutput.mMaterials[mat];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &trans));
     if(trans >= aOutput.mTransforms.size())
         return kParseNonExistantReference;
-    std::shared_ptr<Math::Transform> transform = aOutput.mTransforms[trans];
+    Math::Transform transform = aOutput.mTransforms[trans];
 
     double radius;
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &radius));
@@ -221,7 +221,7 @@ ParserResult FaceSymbol::ParseLine(const std::vector<std::string>& aParameters, 
         return kParseMalformedLine;
     }
 
-    std::array<std::shared_ptr<Vertex>,3> vertices;
+    std::array<Vertex,3> vertices;
 
     for (int i = 0; i < 3; i++){
         double vertIdx;
@@ -253,17 +253,17 @@ ParserResult ObjSymbol::ParseLine(const std::vector<std::string>& aParameters, S
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[2], &col));
     if(col >= aOutput.mColours.size())
         return kParseNonExistantReference;
-    std::shared_ptr<Colour> colour = aOutput.mColours[col];
+    Colour colour = aOutput.mColours[col];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[3], &mat));
     if(mat >= aOutput.mMaterials.size())
         return kParseNonExistantReference;
-    std::shared_ptr<Material> material = aOutput.mMaterials[mat];
+    Material material = aOutput.mMaterials[mat];
 
     REQUIRE_PARSE_SUCCESS(Symbol::GetUnsigned(aParameters[4], &trans));
     if(trans >= aOutput.mTransforms.size())
         return kParseNonExistantReference;
-    std::shared_ptr<Math::Transform> transform = aOutput.mTransforms[trans];
+    Math::Transform transform = aOutput.mTransforms[trans];
 
     ParserOBJPrimitive primitive;
     OBJParser obj;

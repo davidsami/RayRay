@@ -59,14 +59,14 @@ std::vector<LightIntersection> Shader::IntersectLights(Math::Point aOrigin, Math
     std::vector<LightIntersection> intersections;
 
     for(auto it = aScene.mLights.begin(); it != aScene.mLights.end(); it++){
-        Math::Ray rayToLight = (*it)->CreateRay(aOrigin);
+        Math::Ray rayToLight = it->CreateRay(aOrigin);
         ObjectIntersection objectIntersect = IntersectObjects(rayToLight, aScene);
 
         if(!objectIntersect.mIntersects){
             LightIntersection intersect;
             intersect.mLightRay = rayToLight;
-            intersect.mIntensity = (*it)->GetIntensity();
-            intersect.mAttenuation = (*it)->GetAttenuation(aOrigin);
+            intersect.mIntensity = it->GetIntensity();
+            intersect.mAttenuation = it->GetAttenuation(aOrigin);
 
             intersections.push_back(intersect);
         }

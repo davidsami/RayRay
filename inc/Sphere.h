@@ -8,7 +8,7 @@
 
 class Sphere: public Shape {
 public:
-    Sphere(std::shared_ptr<Colour> aColour, std::shared_ptr<Material> aMaterial, std::shared_ptr<Math::Transform> aTransform, double aRadius);
+    Sphere(Colour aColour, Material aMaterial, Math::Transform aTransform, double aRadius);
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
     virtual Math::Normal GetNormal(const Math::Point& aPoint);
 private:

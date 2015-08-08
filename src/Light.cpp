@@ -7,12 +7,6 @@ Math::Ray Light::CreateRay(Math::Point aOrigin){
     return Math::Ray(aOrigin, v.Normal());
 }
 
-/*
-Colour Light::GetColour(){
-    return mColour;
-}
-*/
-
 double Light::GetAttenuation(Math::Point aOrigin){
     Math::Vector v = mCenter - aOrigin;
     return v.d.squaredNorm();

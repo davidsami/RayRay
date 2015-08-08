@@ -8,20 +8,21 @@
 #include "Shape.h"
 
 struct Vertex {
+    Vertex():p(0,0,0) {}
     Vertex(Math::Point aP):p(aP) {}
     Math::Point p;
 };
 
 class Triangle: public Shape {
 public:
-    Triangle(std::shared_ptr<Colour> aColour, std::shared_ptr<Material> aMaterial, std::array<std::shared_ptr<Vertex>,3> aVertices);
-    Triangle(std::array<std::shared_ptr<Vertex>,3> aVertices);
+    Triangle(Colour aColour, Material aMaterial, std::array<Vertex,3>& aVertices);
+    Triangle(std::array<Vertex,3>& aVertices);
     virtual bool Intersect(const Math::Ray& aRay, double* aIntersection);
     virtual Math::Normal GetNormal(const Math::Point&);
 
 private:
-    std::array<std::shared_ptr<Vertex>,3> mVertices;
-    static Math::Normal NormalFromPoints(std::array<std::shared_ptr<Vertex>,3> aVertices);
+    std::array<Vertex,3> mVertices;
+    static Math::Normal NormalFromPoints(std::array<Vertex,3>& aVertices);
     Math::Normal mNormal;
 };
 

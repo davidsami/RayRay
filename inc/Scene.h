@@ -15,16 +15,16 @@ struct ParserOBJPrimitive;
 
 struct Scene {
     // Objects used by all shapes
-    std::vector<std::shared_ptr<Math::Transform>> mTransforms;
-    std::vector<std::shared_ptr<Material>> mMaterials;
-    std::vector<std::shared_ptr<Colour>> mColours;
+    std::vector<Math::Transform> mTransforms;
+    std::vector<Material> mMaterials;
+    std::vector<Colour> mColours;
 
     // Vertices for Triangles
-    std::vector<std::shared_ptr<Vertex>> mVertices;
+    std::vector<Vertex> mVertices;
 
     // Scene
     std::vector<std::shared_ptr<Shape>> mObjects;
-    std::vector<std::unique_ptr<Light>> mLights;
+    std::vector<Light> mLights;
 
     // Globals
     Camera mCamera;

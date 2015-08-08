@@ -24,9 +24,10 @@ enum OBJKeyword{
 };
 
 struct ParserOBJPrimitive {
-    std::vector<std::shared_ptr<Vertex>> mVertices;
+    std::vector<Vertex> mVertices;
     std::vector<std::shared_ptr<Shape>> mObjects;
-    void Apply(std::shared_ptr<Colour> aColour, std::shared_ptr<Material> aMaterial, std::shared_ptr<Math::Transform> aTransform){
+
+    void Apply(Colour aColour, Material aMaterial, Math::Transform aTransform){
         for(auto it = mObjects.begin(); it != mObjects.end(); it++){
             (*it)->SetColour(aColour);
             (*it)->SetMaterial(aMaterial);
