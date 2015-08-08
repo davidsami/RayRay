@@ -15,6 +15,7 @@ public:
     static const std::string kBackgroundColour;
     static const std::string kOutputFile;
     static const std::string kNumThreads;
+    static const std::string kMaxReflectBounces;
 
     // If setting exists, will replace
     void AddSetting(const std::string& aKey, const std::string& aValue);

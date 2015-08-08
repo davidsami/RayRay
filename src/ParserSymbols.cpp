@@ -102,17 +102,18 @@ bool MaterialSymbol::CheckSymbol(const std::vector<std::string>& aParameters){
 }
 
 ParserResult MaterialSymbol::ParseLine(const std::vector<std::string>& aParameters, Scene& aOutput){
-    if(aParameters.size() != 5){
+    if(aParameters.size() != 6){
         return kParseMalformedLine;
     }
 
-    double se, diffuse, specular, shininess;
+    double se, diffuse, specular, shininess, reflectivity;
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[1], &se));
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[2], &diffuse));
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[3], &specular));
     REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[4], &shininess));
+    REQUIRE_PARSE_SUCCESS(Symbol::GetDouble(aParameters[5], &reflectivity));
 
-    aOutput.mMaterials.push_back(Material(se, diffuse, specular, shininess));
+    aOutput.mMaterials.push_back(Material(se, diffuse, specular, shininess, reflectivity));
 
     return kParseSuccess;
 }

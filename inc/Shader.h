@@ -42,10 +42,10 @@ struct LightIntersection : public Intersection {
 class Shader {
 public:
     Colour CastRay(Math::Ray aRay, const Scene& aScene);
-
 protected:
+    Colour CastRay(Math::Ray aRay, const Scene& aScene, uint32_t aBounceNum);
     // Implementation specific
-    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, const Scene& aScene)=0;
+    virtual Colour CalculateColour(ObjectIntersection& aObject, std::vector<LightIntersection>& aLights, const Scene& aScene, uint32_t aNumBounce)=0;
 
     // Intersection functions
     ObjectIntersection IntersectObjects(Math::Ray aRay, const Scene& aScene);

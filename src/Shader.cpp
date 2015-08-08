@@ -5,6 +5,10 @@
 #include "Shader.h"
 
 Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene){
+    return CastRay(aRay, aScene, 0);
+}
+
+Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene, uint32_t aBounceNum){
     ObjectIntersection objectIntersect = IntersectObjects(aRay, aScene);
 
     Colour ret = Colour(0,0,0);
@@ -12,7 +16,7 @@ Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene){
     if(objectIntersect.mIntersects){
         std::vector<LightIntersection> hitLights = IntersectLights(objectIntersect.mPoint, objectIntersect.mNormal, aScene);
 
-        ret = CalculateColour(objectIntersect, hitLights, aScene);
+        ret = CalculateColour(objectIntersect, hitLights, aScene, aBounceNum);
     }
 
     return ret;

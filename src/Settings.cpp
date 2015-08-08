@@ -6,11 +6,14 @@ const std::string Settings::kAmbientIntensity = "ambient_intensity";
 const std::string Settings::kBackgroundColour = "background_colour";
 const std::string Settings::kOutputFile = "output_file";
 const std::string Settings::kNumThreads = "num_threads";
+const std::string Settings::kMaxReflectBounces = "max_reflect_bounces";
 
 const std::map<std::string, std::string> Settings::kDefaults = {
     {Settings::kAmbientIntensity, "0"},
     {Settings::kBackgroundColour, "0,0,0"},
     {Settings::kOutputFile, "out.ppm"},
+    {Settings::kNumThreads, "1"},
+    {Settings::kMaxReflectBounces, "5"},
 };
 
 void Settings::AddSetting(const std::string& aKey, const std::string& aValue){

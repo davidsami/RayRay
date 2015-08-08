@@ -36,6 +36,11 @@ namespace Math {
             out = d + rhs.d;
             return Vector(out);
         }
+        Vector operator*(const double rhs) const{
+            Eigen::Vector3d out;
+            out = d * rhs;
+            return Vector(out);
+        }
         Vector operator-(const Vector& rhs) const{
             Eigen::Vector3d out;
             out = d - rhs.d;
