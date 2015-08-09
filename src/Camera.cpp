@@ -35,7 +35,7 @@ Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, ui
     s *= Math::Transform::Translation(-x/2., -y/2., 0);
 
     // Perspective transform
-    double scale = 1. / tanh(M_PI*aFov/2./180.);
+    double scale = 1. / tan(M_PI*aFov/180./2.);
     Math::Transform pers = Math::Transform::Scaling(scale, scale, 1.);
 
     double m = f / (f - n);
