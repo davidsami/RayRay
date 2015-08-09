@@ -28,10 +28,10 @@ Math::Transform Camera::PerspectiveTransform(double aFov, double n, double f, ui
     double x = xDim;
     double y = yDim;
     // Normalized screen dimensions
-    double aspectRatio = x / y;
+    double aspectRatio = y / x;
 
     Math::Transform s = Math::Transform::Scaling(2./x, -2./y, 1.);
-    s *= Math::Transform::Scaling(aspectRatio, 1., 1.);
+    s *= Math::Transform::Scaling(1., aspectRatio, 1.);
     s *= Math::Transform::Translation(-x/2., -y/2., 0);
 
     // Perspective transform
