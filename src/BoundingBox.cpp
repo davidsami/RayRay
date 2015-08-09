@@ -39,7 +39,7 @@ bool BoundingBox::Intersect(const Math::Ray& aRay, double* aIntersection){
         tmax = std::min(tmax, std::max(t1, t2));
     }
 
-    if ((tmax > 0) && (tmax > tmin)){
+    if ((tmax > 0) && (tmax >= tmin)){
         *aIntersection = tmin;
         return true;
     }
@@ -60,5 +60,5 @@ bool BoundingBox::DoesIntersect(const Math::Ray& aRay){
         }
     }
 
-    return ((tmax > 0) && (tmax > tmin));
+    return ((tmax > 0) && (tmax >= tmin));
 }
