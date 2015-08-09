@@ -3,6 +3,7 @@
 #ifndef RAYRAY_MATH_H
 #define RAYRAY_MATH_H
 
+#include <limits>
 #include <memory>
 #include <ostream>
 #include "Eigen/Dense"
@@ -88,8 +89,26 @@ namespace Math {
     };
 
     struct Ray {
-        Ray(Point aO, Vector aD):o(aO), d(aD), dinv(aD.Inverse()){}
-        Ray():o(0.,0.,0.), d(0.,0.,0.), dinv(0., 0., 0.){}
+        static constexpr double RAY_PRECISION_MIN_T = 0.0001;
+
+        Ray(Point aO, Vector aD):
+            o(aO),
+            d(aD),
+            dinv(aD.Inverse()),
+            mint(RAY_PRECISION_MIN_T),
+            maxt(std::numeric_limits<double>::infinity())
+        {
+        }
+
+        Ray():
+            o(0.,0.,0.),
+            d(0.,0.,0.),
+            dinv(0., 0., 0.),
+            mint(RAY_PRECISION_MIN_T),
+            maxt(std::numeric_limits<double>::infinity())
+        {
+        }
+
         Point GetPoint(double t){
             Eigen::Vector3d p = o.d + d.d*t;
             return Point(p);
@@ -97,6 +116,7 @@ namespace Math {
         Point o;
         Vector d;
         Vector dinv;
+        double mint, maxt;
     };
 
 

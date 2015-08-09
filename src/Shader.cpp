@@ -23,7 +23,7 @@ Colour Shader::CastRay(Math::Ray aRay, const Scene& aScene, uint32_t aBounceNum)
 }
 
 ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, const Scene& aScene){
-    double minIntersection = std::numeric_limits<double>::infinity();
+    double minIntersection = aRay.maxt;
     std::shared_ptr<Shape> intersectionShape;
 
     for(auto it = aScene.mObjects.begin(); it != aScene.mObjects.end(); it++){
@@ -32,7 +32,7 @@ ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, const Scene& aScene)
 
         if(doesIntersect &&
                intersection < minIntersection &&
-               intersection > 0.0001)
+               intersection > aRay.mint)
         {
             minIntersection = intersection;
             intersectionShape = *it;
@@ -42,7 +42,7 @@ ObjectIntersection Shader::IntersectObjects(Math::Ray aRay, const Scene& aScene)
     ObjectIntersection ret;
     ret.mIntersects = false;
 
-    if (minIntersection != std::numeric_limits<double>::infinity()){
+    if (minIntersection != aRay.maxt){
         ret.mIntersects = true;
         ret.mRay = aRay;
         ret.mPoint = aRay.GetPoint(minIntersection);

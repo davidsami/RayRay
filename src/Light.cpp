@@ -4,7 +4,9 @@
 
 Math::Ray Light::CreateRay(Math::Point aOrigin) const{
     Math::Vector v = mCenter - aOrigin;
-    return Math::Ray(aOrigin, v.Normal());
+    Math::Ray ray = Math::Ray(aOrigin, v.Normal());
+    ray.maxt = v.d.norm();
+    return ray;
 }
 
 double Light::GetAttenuation(Math::Point aOrigin) const{
