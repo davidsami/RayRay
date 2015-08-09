@@ -71,7 +71,7 @@ f 6 7 4
 
 # obj file
 # 1. OBJ file name
-# 2. Transform idx
+# 2. Colour idx
 # 3. Material idx
-# 4. Colour idx
+# 4. Transform idx
 obj "test.obj" 1 1 1

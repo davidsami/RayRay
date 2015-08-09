@@ -1,0 +1,33 @@
+# David Sami 2015
+
+set ambient_intensity 0.05
+set num_threads 5
+set max_reflect_bounces 10
+set output_file cornell.ppm
+
+t 0 0 0 1 1 1 0 0 0
+t 0 0 0 1 1 1 0 0 0
+t 1.5 -2.5 5.5 1 1 1 0 0 0
+t -1 -2.6 4 1 1 1 0 0 0
+
+l 30 0 1 0
+l 3 0 4.05 6
+
+cam 2 180 2000 2000
+
+mat 0 1 0 0 0
+mat 0 1 0 0 0.1
+mat 0 0 0.4 100 1
+
+c 230 230 200
+c 0 200 0
+c 200 0 0
+
+obj cornellBox1.obj 1 1 1
+obj cornellBox2.obj 1 1 1
+obj cornellBox3.obj 2 2 1
+obj cornellBox4.obj 3 2 1
+
+sph 2 3 3 1.5
+sph 2 3 4 1.4
+
