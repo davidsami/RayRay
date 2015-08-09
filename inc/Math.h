@@ -3,6 +3,7 @@
 #ifndef RAYRAY_MATH_H
 #define RAYRAY_MATH_H
 
+#include <math.h>
 #include <limits>
 #include <memory>
 #include <ostream>
@@ -157,9 +158,9 @@ namespace Math {
             return Transform(n);
         }
         static Transform Rotation(double yaw, double pitch, double roll){
-            Eigen::AngleAxisd rollR(roll, Eigen::Vector3d::UnitZ());
-            Eigen::AngleAxisd yawR(yaw, Eigen::Vector3d::UnitY());
-            Eigen::AngleAxisd pitchR(pitch, Eigen::Vector3d::UnitX());
+            Eigen::AngleAxisd rollR(roll/180*M_PI, Eigen::Vector3d::UnitZ());
+            Eigen::AngleAxisd yawR(yaw/180*M_PI, Eigen::Vector3d::UnitY());
+            Eigen::AngleAxisd pitchR(pitch/180*M_PI, -Eigen::Vector3d::UnitX());
 
             Eigen::Quaterniond q = rollR * yawR * pitchR;
             Eigen::Projective3d n;
